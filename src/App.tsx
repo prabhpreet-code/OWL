@@ -1,5 +1,18 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import MarketPlace from "./pages/MarketPlace";
+import Home from "./pages/Home";
 import "./App.css";
 
+
 function App() {
-  return <div>Hello! This is the App Component</div>;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/market" element={<MarketPlace />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
+
+export default App;
