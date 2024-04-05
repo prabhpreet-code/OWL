@@ -1,5 +1,5 @@
 
-# <img width=50px  src="https://github.com/prabhpreet-code/OWL/blob/master-dummy/Frontend/src/assets/owl.png"/> OWL (Currently cooking 🙊)
+# <img width=50px  src="https://github.com/prabhpreet-code/OWL/blob/master/Frontend/src/assets/owl.png"/> OWL (Currently cooking 🙊)
 
 
 Owl is a revolutionary gaming platform that aims to redefine the gaming industry by addressing critical issues such as piracy, security concerns, centralization, non-fractional ownership, and non-transferable licenses. Leveraging cutting-edge technologies such as TypeScript, React.js, Shadcn, and Solidity, Owl offers a unique experience for gamers, ensuring secure transactions, verifiable ownership, and the ability to resell games with reusable licenses.
