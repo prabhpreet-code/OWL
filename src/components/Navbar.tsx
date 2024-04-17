@@ -11,9 +11,11 @@ import {
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import React from "react";
+import { useAccount } from "wagmi";
 
 export function NavbarComp() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isConnected } = useAccount();
 
   const menuItems = [
     {
@@ -52,14 +54,18 @@ export function NavbarComp() {
             <NavigationMenuTrigger>Marketplace</NavigationMenuTrigger>
           </Link>
         </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link to="/profile">
-            <NavigationMenuTrigger>Profile</NavigationMenuTrigger>
-          </Link>
-        </NavigationMenuItem>
+        {isConnected ? (
+          <NavigationMenuItem>
+            <Link to="/profile">
+              <NavigationMenuTrigger>Profile</NavigationMenuTrigger>
+            </Link>
+          </NavigationMenuItem>
+        ) : (
+          <div></div>
+        )}
       </NavigationMenuList>
 
-      <Link
+      {/* <Link
         to="#_"
         className="relative px-5 py-3 overflow-hidden font-medium text-gray-600 bg-gray-100 border border-gray-100 rounded-lg shadow-inner group"
       >
@@ -71,7 +77,8 @@ export function NavbarComp() {
         <span className="relative transition-colors duration-300 delay-200 group-hover:text-white ease font-inter">
           Connect Wallet
         </span>
-      </Link>
+      </Link> */}
+      <w3m-button />
     </NavigationMenu>
   );
 }

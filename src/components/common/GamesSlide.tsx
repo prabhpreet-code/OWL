@@ -1,4 +1,4 @@
-import { dummyData } from "@/utils/dummyGameData";
+import { dummyData } from "@/utils/dummydata/dummyGameData";
 import Games from "../Marketplace/Games";
 
 export default function GamesSlide() {
@@ -7,7 +7,17 @@ export default function GamesSlide() {
       {dummyData.map((element, index) => (
         <div>
           {index > 1 ? (
-            <Games key={index} url={element.img} index={0} name={""} rating={0} releaseDate={0} summary={""} genres={""} className={""}  />
+            <Games
+              key={index}
+              url={element.img}
+              index={0}
+              name={""}
+              rating={0}
+              releaseDate={0}
+              summary={""}
+              genres={""}
+              className={""}
+            />
           ) : (
             <div></div>
           )}

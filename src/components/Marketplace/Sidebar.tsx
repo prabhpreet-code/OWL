@@ -1,4 +1,4 @@
-import { SidebarData } from "@/utils/SidebarData";
+import { SidebarData } from "@/utils/dummydata/SidebarData";
 import { Link } from "react-router-dom";
 export default function SideBar() {
   return (
@@ -10,7 +10,7 @@ export default function SideBar() {
               {element.header}
             </h2>
 
-            {element.tags.map((tag,tag_index) => (
+            {element.tags.map((tag, tag_index) => (
               <ul key={tag_index} className="flex flex-col space-y-1">
                 <li
                   rel="noopener noreferrer"

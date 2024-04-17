@@ -7,7 +7,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import urlArray from "@/utils/imageData";
+import urlArray from "@/utils/dummydata/imageData";
 
 export function MarketCarousel() {
   const plugin = React.useRef(

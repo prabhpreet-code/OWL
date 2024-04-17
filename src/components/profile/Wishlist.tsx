@@ -1,11 +1,11 @@
-import { dummyData } from "@/utils/dummyGameData";
+import { dummyData } from "@/utils/dummydata/dummyGameData";
 import Games from "../Marketplace/Games";
 
 export default function Wishlist() {
   return (
     <section className="flex flex-col my-12 ">
       <h1 className="text-3xl text-left font-semibold font-urbanist tracking-wider mb-4 ">
-        Your Wishlist   :
+        Your Wishlist :
       </h1>
       <div className="grid grid-cols-4 gap-x-20 gap-y-10">
         {dummyData.map((element, index) => (

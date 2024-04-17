@@ -1,4 +1,4 @@
-import { dummyStats } from "@/utils/dummyGameData";
+import { dummyStats } from "@/utils/dummydata/dummyGameData";
 
 export default function Stats() {
   return (
