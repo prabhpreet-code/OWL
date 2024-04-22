@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Button } from "../ui/button";
-import { data } from "@/utils/ButtonArrayData";
+import { data } from "@/utils/dummydata/ButtonArrayData";
 import ButtonContext from "@/contexts/ButtonContext";
 type ButtonTypes = {
   buttonIndex: number;

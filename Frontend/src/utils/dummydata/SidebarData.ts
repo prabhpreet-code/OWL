@@ -43,6 +43,5 @@ export const profileSidebar = [
   "Chat",
   "Orders",
   "Wishlist",
-  "Settings",
-  "Logout",
+  "Profile",
 ];

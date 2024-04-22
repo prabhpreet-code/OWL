@@ -4,7 +4,7 @@ import { PaginationSection } from "./PaginationSection";
 import { useContext, useState } from "react";
 import ButtonContext, { ButtonTypes } from "@/contexts/ButtonContext";
 import { SkeletonGrid } from "./SkeletonGrid";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 type fetchDataType = {
   id: number;
@@ -33,11 +33,15 @@ export default function GameGrid() {
   const transformData = (data: any[], buttonIndex: number) => {
     return buttonIndex === 1 ? sortByRating(data) : data;
   };
-  const { isLoading, data, isFetching } = useQuery(["game-query"], getGames, {
-    staleTime: 10000,
+  const gameData = useQuery({
+    queryKey: ["game-query"],
+    queryFn: getGames,
+    staleTime: 100000,
     select: (data) => transformData(data, buttonIndex),
-    onError: () => console.log("The query is not working :("),
   });
+
+  
+  const { isLoading, data, isFetching }=gameData;
 
   console.log(data);
 
@@ -74,8 +78,8 @@ export default function GameGrid() {
                 url={element.cover.url}
                 name={element.name}
                 rating={element.rating}
-                genres={element?.genres.map((genre) => genre?.name).join(", ")}
-                releaseDate={element.release_dates[0].date}
+                genres={element?.genres?.map((genre) => genre?.name).join(", ")}
+                releaseDate={element?.release_dates[0]?.date}
                 summary={element.summary}
                 className={"w-4/5 rounded-md border cursor-pointer"}
               />

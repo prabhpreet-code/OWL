@@ -1,6 +1,8 @@
 import Footer from "@/components/Home/Footer";
 import { NavbarComp } from "@/components/Navbar";
+import Onboarding from "@/components/forms/Onboarding";
 import AvatarCards from "@/components/profile/AvatarCard";
+import Orders from "@/components/profile/Orders";
 import { OwnedGames } from "@/components/profile/OwnedGames";
 import ProfileCards from "@/components/profile/ProfileCards";
 import ProfileHeader from "@/components/profile/ProfileHeader";
@@ -8,14 +10,19 @@ import Sidebar from "@/components/profile/Sidebar";
 import Stats from "@/components/profile/Stats";
 import Wishlist from "@/components/profile/Wishlist";
 import SidebarContext, { SidebarTypes } from "@/contexts/SidebarContext";
+import { Web3ModalProvider } from "@/contexts/WalletContext";
 import { Navbar } from "@nextui-org/react";
+
 import { useContext } from "react";
+
+import { useAccount } from "wagmi";
 
 export default function Profile() {
   const { buttonIndex } = useContext(SidebarContext) as SidebarTypes;
-  function renderComponent() {
-    return <div></div>;
-  }
+  const { address } = useAccount();
+
+  console.log(address);
+
   return (
     <main className="px-2 py-4 flex mb-5 justify-around flex-col 2xl:px-36 medium:px-48 extra:px-60 ">
       <NavbarComp />
@@ -24,8 +31,14 @@ export default function Profile() {
           <Sidebar />
         </div>
         <div className="col-span-4">
-          <ProfileHeader />
-          {buttonIndex === 3 ? <Wishlist /> : <Stats />}
+          {buttonIndex === 4 ||
+          buttonIndex === 3 ||
+          buttonIndex === 2 ? (
+            <div></div>
+          ) : (
+            <ProfileHeader />
+          )}
+          {switch_Index(buttonIndex)}
           {/* <OwnedGames /> */}
         </div>
       </section>
@@ -34,4 +47,19 @@ export default function Profile() {
       </section>
     </main>
   );
+}
+
+function switch_Index(index: number) {
+  switch (index) {
+    case 0:
+      return <Stats />;
+    case 1:
+      return <Wishlist />;
+    case 2:
+      return <Orders />;
+    case 3:
+      return <Wishlist />;
+    case 4:
+      return <Onboarding />;
+  }
 }

@@ -1,8 +1,11 @@
 import { Button } from "@nextui-org/react";
 import { CarouselPlugin } from "./DetailCarousel";
 import timeConverter from "@/utils/unixTimeConvert";
+import { useCart } from "@/contexts/CartContext";
+import { MdAddShoppingCart } from "react-icons/md";
 
 type dataType = {
+  id: number;
   name: string;
   screenshots: [
     {
@@ -38,6 +41,17 @@ export default function GameDetails({
   data: dataType;
   video: string[];
 }) {
+  const { addToCart, cart, removeFromCart } = useCart();
+
+  const isInCart = cart.includes(data.id);
+
+  const handleCart = () => {
+    if (isInCart) {
+      removeFromCart(data.id);
+    } else {
+      addToCart(data.id);
+    }
+  };
   return (
     <section className="overflow-hidden md:min-w-l ">
       <div></div>
@@ -94,6 +108,21 @@ export default function GameDetails({
                 </span>
               </p>
               <div className="flex items-center text-nowrap ">
+                <Button
+                  type="button"
+                  onClick={() => handleCart()}
+                  className="flex justify-between mt-4 w-full rounded-sm bg-black px-2 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                >
+                  {isInCart ? (
+                    <>
+                      Remove from Wishlist <MdAddShoppingCart />
+                    </>
+                  ) : (
+                    <>
+                      Add to Wishlist <MdAddShoppingCart />
+                    </>
+                  )}
+                </Button>
                 <Button
                   type="button"
                   className="flex px-[75px] items-center mt-4 w-full rounded-sm bg-black py-1 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"

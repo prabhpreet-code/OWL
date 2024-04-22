@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	defaultPort = "8008"
+	defaultPort = "8080"
 	// idleTimeout       = 30 * time.Second
 	// writeTimeout      = 180 * time.Second
 	// readHeaderTimeout = 10 * time.Second
@@ -49,4 +49,7 @@ func check(e error){
   if e != nil {
     log.Fatal(e)
   }
+}
+func enableCors(w *http.ResponseWriter) {
+(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }

@@ -1,16 +1,14 @@
 import { getPlatforms } from "@/api/getPlatforms";
 import { Skeleton } from "@nextui-org/react";
 import { TiTick } from "react-icons/ti";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Platform({ id, detailsResponse }: any) {
-  const platformQuery = useQuery(
-    ["platform-game", { gameId: id }],
-    () => getPlatforms(detailsResponse?.data[0].platforms),
-    {
-      enabled: !detailsResponse?.isLoading,
-    }
-  );
+  const platformQuery = useQuery({
+    queryKey: ["platform-game", { gameId: id }],
+    queryFn: () => getPlatforms(detailsResponse?.data[0].platforms),
+    enabled: !detailsResponse?.isLoading,
+  });
   return (
     <section className="mt-12">
       {platformQuery?.isLoading ? (

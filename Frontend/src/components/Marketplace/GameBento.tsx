@@ -1,4 +1,4 @@
-import urlArray from "@/utils/imageData";
+import urlArray from "@/utils/dummydata/imageData";
 import ButtonArray from "./ButtonArray";
 export function GameBento() {
   return (
@@ -14,10 +14,8 @@ export function GameBento() {
         <div
           key={index + 1}
           className={`relative row-span-1  rounded-xl  bg-background  dark:bg-neutral-900 ${
-            index===3 ? "border-b border-gray-200" : "border-2"
-          } ${
-            index === 1 || index === 3 ? "col-span-3" : ""
-          }`}
+            index === 3 ? "border-b border-gray-200" : "border-2"
+          } ${index === 1 || index === 3 ? "col-span-3" : ""}`}
         >
           <div className="flex flex-col sm:h-[100px] h-[200px] w-full relative justify-center shadow-2xl  text-center  rounded-sm lg:text-left">
             {index != 3 ? (

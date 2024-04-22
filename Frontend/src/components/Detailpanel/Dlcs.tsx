@@ -1,6 +1,6 @@
 import { Accordion, AccordionItem, Avatar, Button } from "@nextui-org/react";
 import { getRecommendations } from "@/api/getRecommendations";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import {
   ReactElement,
@@ -11,13 +11,11 @@ import {
 } from "react";
 
 export default function DlcsComp({ detailsResponse, id }: any) {
-  const dlcData = useQuery(
-    ["dlc", { gameId: id }],
-    () => getRecommendations(detailsResponse?.data[0].dlcs),
-    {
-      enabled: !detailsResponse?.isLoading,
-    }
-  );
+  const dlcData = useQuery({
+    queryKey: ["dlc", { gameId: id }],
+    queryFn: () => getRecommendations(detailsResponse?.data[0].dlcs),
+    enabled: !detailsResponse?.isLoading,
+  });
   console.log(dlcData);
 
   return (

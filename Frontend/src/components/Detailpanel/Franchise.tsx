@@ -1,25 +1,21 @@
 import { getFranchises } from "@/api/getFranchises";
 import { getRecommendations } from "@/api/getRecommendations";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Button, Skeleton } from "@nextui-org/react";
 
 import FranchiseCards from "../common/FranchiseCards";
 
 export default function Franchise({ id, detailsResponse }: any) {
-  const franchiseQuery = useQuery(
-    ["franchise", { gameId: id }],
-    () => getFranchises(detailsResponse?.data[0].franchises),
-    {
-      enabled: !detailsResponse?.isLoading,
-    }
-  );
-  const { data: franchiseGames } = useQuery(
-    ["franchise-games", { gameId: id }],
-    () => getRecommendations(franchiseQuery?.data[0].games),
-    {
-      enabled: !franchiseQuery.isLoading,
-    }
-  );
+  const franchiseQuery = useQuery({
+    queryKey: ["franchise", { gameId: id }],
+    queryFn: () => getFranchises(detailsResponse?.data[0].franchises),
+    enabled: !detailsResponse?.isLoading,
+  });
+  const { data: franchiseGames } = useQuery({
+    queryKey: ["franchise-games", { gameId: id }],
+    queryFn: () => getRecommendations(franchiseQuery?.data[0].games),
+    enabled: !franchiseQuery.isLoading,
+  });
 
   const settings = {
     className: " ml-32 w-[60vw] center",

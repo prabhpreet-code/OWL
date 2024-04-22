@@ -7,13 +7,27 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import urlArray from "@/utils/imageData";
+import urlArray from "@/utils/dummydata/imageData";
+import { QueryCache } from "@tanstack/react-query";
 
 export function MarketCarousel() {
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true })
   );
 
+  const queryCache = new QueryCache({
+    onError: (error) => {
+      console.log(error);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onSettled: (data, error) => {
+      console.log(data, error);
+    },
+  });
+  const Img = queryCache.find(["game-query"]);
+  console.log(Img);
   return (
     <Carousel
       plugins={[plugin.current]}

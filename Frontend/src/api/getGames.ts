@@ -1,4 +1,4 @@
-export const URLEndpoint = "http://localhost:8080/";
+export const URLEndpoint = "http://localhost:8080/api/";
 
 export const getGames = async () => {
   const requestOptions: RequestInit = {
@@ -12,5 +12,6 @@ export const getGames = async () => {
   );
 
   const result = await response.json();
+  console.log(result);
   return result;
 };

@@ -1,14 +1,12 @@
 import { getGamesById } from "@/api/getGameById";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export function useGetDetails(id: string | undefined) {
-  const { data, isLoading } = useQuery(
-    ["game-details", { game_id: id }],
-    () => getGamesById(id),
-    {
-      staleTime: 10000,
-    }
-  );
+  const { data, isLoading } = useQuery({
+    queryKey: ["game-details", { game_id: id }],
+    queryFn: () => getGamesById(id),
+    staleTime: 10000,
+  });
   // console.log(data);
   return {
     data,

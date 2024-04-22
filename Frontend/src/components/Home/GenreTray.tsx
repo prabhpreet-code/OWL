@@ -1,5 +1,5 @@
 import React from "react";
-import { genres } from "@/utils/genreData";
+import { genres } from "@/utils/dummydata/genreData";
 import { MdCircle } from "react-icons/md";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";

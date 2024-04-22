@@ -38,19 +38,19 @@ function Home() {
         }
       );
 
-      let tl2=gsap.timeline({
-        scrollTrigger:{
-          markers:false,
-          start:1080,
-          end:1450,
-          scrub:2,
-        }
-      })
+      let tl2 = gsap.timeline({
+        scrollTrigger: {
+          markers: false,
+          start: 1080,
+          end: 1450,
+          scrub: 2,
+        },
+      });
 
       tl2.fromTo(
         ".bento-grid",
         {
-          y:200,
+          y: 200,
           scale: 1,
           opacity: 0,
         },

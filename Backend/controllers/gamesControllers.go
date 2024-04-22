@@ -32,8 +32,12 @@ func GetTokenHandler(w http.ResponseWriter, r *http.Request){
 	json.NewEncoder(w).Encode(data)
 }
 
-func GetGamesHandler(w http.ResponseWriter, r *http.Request){
+func enableCors(w *http.ResponseWriter) {
+(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
 
+func GetGamesHandler(w http.ResponseWriter, r *http.Request){
+    enableCors(&w)
 	token := r.URL.Query().Get("token")
 
 
@@ -76,13 +80,16 @@ func GetGamesHandler(w http.ResponseWriter, r *http.Request){
 }
 
 func GetInfoHandler(w http.ResponseWriter, r *http.Request){
-
+    enableCors(&w)
 	token := r.URL.Query().Get("token")
-	idStr := r.URL.Query().Get("id")
+	idStr := r.URL.Query().Get("game_id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
 
 
 	query := []byte(`fields id, release_dates.date, similar_games, dlcs, franchise, platforms, language_supports.id, franchises, parent_game, genres.name, videos, involved_companies.id, name, summary, rating, storyline, cover.url, screenshots.url; where id=` + strconv.FormatInt(id, 10) + `;`)
+
+	fmt.Println(token)
+	fmt.Println(idStr)
 
 	url := "https://api.igdb.com/v4/games/"
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(query))
@@ -103,7 +110,7 @@ func GetInfoHandler(w http.ResponseWriter, r *http.Request){
 	}
 	defer resp.Body.Close()
 
-	fmt.Println(resp);
+	
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -116,13 +123,13 @@ func GetInfoHandler(w http.ResponseWriter, r *http.Request){
 }
 
 func GetVideosHandler(w http.ResponseWriter, r *http.Request){
-
+    enableCors(&w)
 	token := r.URL.Query().Get("token")
-	gameIdStr := r.URL.Query().Get("game_id")
-	gameId, _ := strconv.ParseInt(gameIdStr, 10, 64)
+	gameIdStr := r.URL.Query().Get("id")
+	// gameId, _ := strconv.ParseInt(gameIdStr, 10, 64)
 
 
-	query := []byte(`fields checksum,game,name,video_id; where game=` + strconv.FormatInt(gameId, 10) + `;`)
+	query := []byte("fields checksum,game,name,video_id; where game= " + gameIdStr+ ";")
 
 	url := "https://api.igdb.com/v4/game_videos"
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(query))
@@ -156,13 +163,17 @@ func GetVideosHandler(w http.ResponseWriter, r *http.Request){
 }
 
 func GetRecommendationsHandler(w http.ResponseWriter, r *http.Request){
-
+    enableCors(&w)
 	token := r.URL.Query().Get("token")
-	idStr := r.URL.Query().Get("id")
-	id, _ := strconv.ParseInt(idStr, 10, 64)
+	idStr := r.URL.Query().Get("game_id")
+	// id, _ := strconv.ParseInt(idStr, 10, 64)
 
 
-	query:= []byte(`fields id, similar_games,themes, release_dates.date,genres.name,videos,involved_companies.company ,name,summary,rating,storyline,cover.url,screenshots.url; where id=`+ strconv.FormatInt(id, 10) + `;`)
+
+
+	
+query := []byte("fields id, similar_games, themes, release_dates.date, genres.name, videos, involved_companies.company, name, summary, rating, storyline, cover.url, screenshots.url; where id=(" + idStr + ");")
+
 
 	url := "https://api.igdb.com/v4/games/"
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(query))
@@ -196,13 +207,13 @@ func GetRecommendationsHandler(w http.ResponseWriter, r *http.Request){
 }
 
 func GetFranchiseHandler(w http.ResponseWriter, r *http.Request){
-
+  enableCors(&w)
   token := r.URL.Query().Get("token")
-	idStr := r.URL.Query().Get("id")
-	id, _ := strconv.ParseInt(idStr, 10, 64)
+	idStr := r.URL.Query().Get("franchises")
+	// id, _ := strconv.ParseInt(idStr, 10, 64)
 
 
-	query:= []byte(`fields checksum,created_at,games,name,slug,updated_at,url;where id=`+ strconv.FormatInt(id, 10) + `;`)
+	query:= []byte("fields checksum,created_at,games,name,slug,updated_at,url;where id="+ idStr + ";")
 
 	url := "https://api.igdb.com/v4/franchises/"
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(query))
@@ -236,9 +247,9 @@ func GetFranchiseHandler(w http.ResponseWriter, r *http.Request){
 }
 
 func GetPlatformHandler(w http.ResponseWriter, r *http.Request){
-
+  enableCors(&w)
   token := r.URL.Query().Get("token")
-	idStr := r.URL.Query().Get("id")
+	idStr := r.URL.Query().Get("game_id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
 
 

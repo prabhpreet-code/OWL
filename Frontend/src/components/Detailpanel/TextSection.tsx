@@ -2,7 +2,7 @@ import { Button } from "@nextui-org/react";
 import DlcsComp from "./Dlcs";
 import Franchise from "./Franchise";
 import Platform from "./Platfrom";
-import Languages from "./Languages";
+// import Languages from "./Languages";
 
 export default function TextSection({
   summary,
@@ -70,7 +70,7 @@ export default function TextSection({
           </Button>
         </div>
         <Platform id={id} detailsResponse={detailsResponse} />
-        <Languages id={id} detailsResponse={detailsResponse} />
+        {/* <Languages id={id} detailsResponse={detailsResponse} /> */}
       </div>
     </section>
   );

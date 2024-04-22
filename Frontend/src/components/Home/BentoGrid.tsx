@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { owlFeatures } from "@/utils/featuresData";
+import { owlFeatures } from "@/utils/dummydata/featuresData";
 import useDynamicRefs from "use-dynamic-refs";
 import Lottie from "react-lottie";
-
+import { Button } from "@nextui-org/react";
 import "../../App.css";
 
 import { ArrowRight } from "lucide-react";
-import { Button } from "../ui/button";
 export function BentoGrid() {
   const [RefNumber, setRefNumber] = useState("1");
   const [getRef, setRef] = useDynamicRefs();
@@ -78,8 +77,8 @@ export function BentoGrid() {
                 </p>
                 <div className="flex flex-col  space-y-4 sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
                   <Button
-                    variant="ghost"
-                    className=" flex jusitfy-center items-center p-7 text-lg font-semibold border rounded dark:border-gray-100"
+                    variant="flat"
+                    className=" flex bg-[gray]/[0.23] text-white jusitfy-center items-center p-7 text-lg font-semibold rounded "
                   >
                     Explore
                     <ArrowRight className="mt-1 ml-1" />
@@ -91,7 +90,7 @@ export function BentoGrid() {
                   width={200}
                   options={{
                     loop: true,
-                    autoplay:false,
+                    autoplay: false,
                     animationData: element.lottieData,
                     rendererSettings: {
                       preserveAspectRatio: "xMidYMid slice",
