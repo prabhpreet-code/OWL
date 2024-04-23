@@ -1,11 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Toaster } from "sonner";
+import { lazy, Suspense } from "react";
 
 //Page Imports
 import Home from "./pages/Home";
-import MarketPlace from "./pages/MarketPlace";
+// import MarketPlace from "./pages/MarketPlace";
+const MarketPlace = lazy(() => import("./pages/MarketPlace"));
+const Profile = lazy(() => import("./pages/Profile"));
 import { GameDetailsPage } from "./pages/Details";
-import Profile from "./pages/Profile";
+// import Profile from "./pages/Profile";
 
 //Context Providers
 import { ButtonContextProvider } from "./contexts/ButtonContext";
@@ -18,6 +22,7 @@ import { ProtectedRoutes } from "./components/ProtectedRoutes";
 
 import "./App.css";
 import { CartProvider } from "./contexts/CartContext";
+import { SkeletonGrid } from "./components/Marketplace/SkeletonGrid";
 
 function App() {
   return (
@@ -27,17 +32,29 @@ function App() {
           <FormContextProvider>
             <SidebarContextProvider>
               <ButtonContextProvider>
+                <Toaster expand={false} position="bottom-right" closeButton />
                 <Routes>
                   <Route path="/" element={<Home />} />
 
-                  <Route path="/market" element={<MarketPlace />} />
+                  <Route
+                    path="/market"
+                    element={
+                      <Suspense fallback={<SkeletonGrid/>}>
+                        {" "}
+                        <MarketPlace />
+                      </Suspense>
+                    }
+                  />
+
                   <Route path="/game/:id" element={<GameDetailsPage />} />
 
                   <Route
                     path="/profile"
                     element={
                       <ProtectedRoutes>
-                        <Profile />
+                        <Suspense fallback={<h1>loading</h1>}>
+                          <Profile />
+                        </Suspense>
                       </ProtectedRoutes>
                     }
                   />

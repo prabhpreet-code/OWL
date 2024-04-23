@@ -1,7 +1,11 @@
 import { useCart } from "@/contexts/CartContext";
 import timeConverter from "@/utils/unixTimeConvert";
-import { MdAddShoppingCart } from "react-icons/md";
+// import { MdAddShoppingCart } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { ImCross } from "react-icons/im";
+import { toast } from "sonner";
+
+import { CiViewList } from "react-icons/ci";
 
 export type GameProps = {
   index: number;
@@ -29,23 +33,27 @@ export default function Games({
 
   const handleCart = () => {
     if (isInCart) {
+      toast.error(`${name} removed from Wishlist`);
+
       removeFromCart(index);
     } else {
+      toast.success(`${name} added to Wishlist`);
       addToCart(index);
     }
   };
   return (
     <div
       key={index}
-      onClick={() => navigate(`/game/${index}`)}
+      // onClick={() => navigate(`/game/${index}`)}
       className={`${className} cursor-pointer `}
     >
       <img
         src={url?.replace("thumb", "1080p")}
         alt="Laptop"
+        onClick={() => navigate(`/game/${index}`)}
         className=" w-full rounded-t-md object-cover"
       />
-      <div className="p-4 font-inter">
+      <div className="p-5 font-inter">
         <p className=" line-clamp-2 text-lg font-semibold font-jura">{name}</p>
         <p className="mt-3 text-sm line-clamp-2 text-white ">{summary}</p>
         <p className="mt-3 flex justify-between text-sm text-white">
@@ -70,15 +78,15 @@ export default function Games({
         <button
           type="button"
           onClick={() => handleCart()}
-          className="flex justify-between mt-4 w-full rounded-sm bg-black px-2 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+          className="flex justify-between mt-4  rounded-sm bg-black px-2 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
         >
           {isInCart ? (
             <>
-              Remove from Wishlist <MdAddShoppingCart />
+              <ImCross className="text-red-400 text-2xl font-extrabold" />
             </>
           ) : (
             <>
-              Add to Wishlist <MdAddShoppingCart />
+              <CiViewList className="text-green-400 text-xl font-extrabold" />
             </>
           )}
         </button>

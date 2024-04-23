@@ -81,7 +81,7 @@ export default function GameGrid() {
                 genres={element?.genres?.map((genre) => genre?.name).join(", ")}
                 releaseDate={element?.release_dates[0]?.date}
                 summary={element.summary}
-                className={"w-4/5 rounded-md border cursor-pointer"}
+                className={"w-4/5 rounded-md border cursor-pointer h-max "}
               />
             )
           )}

@@ -2,6 +2,7 @@ import { Button } from "@nextui-org/react";
 import { CarouselPlugin } from "./DetailCarousel";
 import timeConverter from "@/utils/unixTimeConvert";
 import { useCart } from "@/contexts/CartContext";
+import { toast } from "sonner";
 import { MdAddShoppingCart } from "react-icons/md";
 
 type dataType = {
@@ -47,9 +48,11 @@ export default function GameDetails({
 
   const handleCart = () => {
     if (isInCart) {
+      toast.error(`${data.name} removed from Wishlist`);
       removeFromCart(data.id);
     } else {
       addToCart(data.id);
+      toast.success(`${data.name} added to Wishlist`);
     }
   };
   return (
