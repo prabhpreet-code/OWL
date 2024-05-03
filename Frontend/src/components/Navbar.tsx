@@ -39,13 +39,14 @@ export function NavbarComp() {
     const handleConnect = async () => {
       const fetchAllUsers = await getAllUsers();
       console.log(fetchAllUsers);
-      let doesUserExist = fetchAllUsers?.find((user: any) => {
+      const doesUserExist = fetchAllUsers?.find((user: any) => {
         user.walletAddress === address;
       });
       console.log(doesUserExist);
-      isConnected && doesUserExist !== undefined
-        ? await createUser(address)
-        : toast.error("Awesome");
+      if(isConnected && doesUserExist !== undefined){
+         await createUser(address)
+      }
+        //  toast.error("Awesome");
     };
     handleConnect();
   }, [isConnected]);

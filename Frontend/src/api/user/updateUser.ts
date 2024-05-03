@@ -9,15 +9,12 @@ type updateUser = {
   tags: [string];
   picture: string;
   walletAddress: `0x${string}` | undefined;
+  wishlist: any[];
 };
-export const updateUser = async ({
-  username,
-  email,
-  bio,
-  tags,
-  picture,
-  walletAddress,
-},id: updateUser) => {
+export const updateUser = async (
+  { username, email, bio, tags, picture, walletAddress, wishlist },
+  id: updateUser
+) => {
   // const { address } = useAccount();
 
   console.log(username, picture);
@@ -29,6 +26,7 @@ export const updateUser = async ({
       tags: tags,
       picture: picture,
       walletAddress: walletAddress,
+      wishList: wishlist,
     })
     .then((result) => {
       console.log(result);

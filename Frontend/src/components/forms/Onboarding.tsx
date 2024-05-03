@@ -18,6 +18,7 @@ export default function Onboarding() {
   const { address } = useAccount();
   // const { Form, setForm } = useContext(formContext) as FormContextTypes;
   const { Form, setForm }: any = useFormStore();
+
   const [selected, setSelected] = useState([]);
   const form = useForm({
     defaultValues: {

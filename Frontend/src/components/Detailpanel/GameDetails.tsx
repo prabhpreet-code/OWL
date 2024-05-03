@@ -1,10 +1,13 @@
 import { Button } from "@nextui-org/react";
 import { CarouselPlugin } from "./DetailCarousel";
 import timeConverter from "@/utils/unixTimeConvert";
-import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
-import { MdAddShoppingCart } from "react-icons/md";
-import { useWishListStore } from "@/store/store";
+import { ImCross } from "react-icons/im";
+import { CiViewList } from "react-icons/ci";
+import { useAccount } from "wagmi";
+import { config, projectId } from "@/contexts/WalletContext";
+import { createWeb3Modal } from "@web3modal/wagmi/react";
+import { useWishlistStore, useCartStore } from "@/store/store";
 
 type dataType = {
   id: number;
@@ -43,22 +46,48 @@ export default function GameDetails({
   data: dataType;
   video: string[];
 }) {
-  const { wishlist, addToWishlist, removeFromWishlist }: any =
-    useWishListStore();
+  const { isConnected } = useAccount();
+  const modal = createWeb3Modal({ config, projectId });
+  const { cart, addToCart, removeFromCart } = useCartStore();
+  const isInCart = cart.some((game) => game.name === data.name);
+  const { wishlist, addToWishlist, removeFromWishlist } = useWishlistStore();
+  const isInWishlist = wishlist.some((game) => game.name === data.name);
 
-  const isInCart = wishlist.includes(data.id);
+  const handleWishlist = () => {
+    if (isConnected) {
+      if (isInWishlist) {
+        toast.error(`${data.name} removed from Wishlist`);
+        removeFromWishlist(data.id);
+      } else {
+        toast.success(`${data.name} added to Wishlist`);
+        addToWishlist({
+          id: data.id,
+          name: data.name,
+          cover: { url: data.cover.url },
+        });
+      }
+    } else {
+      modal.open();
+      toast.error("You need to connect your wallet first.");
+    }
+  };
 
   const handleCart = () => {
-    if (isInCart) {
-      toast.error(`${data.name} removed from Wishlist`);
-      removeFromWishlist({
-        id: data?.id,
-        name: data?.name,
-        url: data?.cover?.url,
-      });
+    if (isConnected) {
+      if (isInCart) {
+        toast.error(`${data.name} removed from Wishlist`);
+        removeFromCart(data.id);
+      } else {
+        toast.success(`${data.name} added to Wishlist`);
+        addToCart({
+          id: data.id,
+          name: data.name,
+          cover: { url: data.cover.url },
+        });
+      }
     } else {
-      addToWishlist({ id: data?.id, name: data?.name, url: data?.cover?.url });
-      toast.success(`${data.name} added to Wishlist`);
+      modal.open();
+      toast.error("You need to connect your wallet first.");
     }
   };
   return (
@@ -116,32 +145,34 @@ export default function GameDetails({
                   {data?.genres.map((genre) => genre.name).join(", ")}
                 </span>
               </p>
-              <div className="flex items-center text-nowrap ">
+              <div className="flex flex-row ">
                 <Button
                   type="button"
                   onClick={() => handleCart()}
-                  className="flex justify-between mt-4 w-full rounded-sm bg-black px-2 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                  className="flex w-9/12 items-center mt-4 rounded-sm bg-black text-sm font-semibold text-white "
                 >
-                  {isInCart ? (
-                    <>
-                      Remove from Wishlist <MdAddShoppingCart />
-                    </>
-                  ) : (
-                    <>
-                      Add to Wishlist <MdAddShoppingCart />
-                    </>
-                  )}
-                </Button>
-                <Button
-                  type="button"
-                  className="flex px-[75px] items-center mt-4 w-full rounded-sm bg-black py-1 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-                >
-                  <span className=" flex title-font text-base font-bold  text-violet-400">
+                  {/* <span className=" flex title-font text-base font-bold text-violet-400">
                     Buy
                   </span>
                   <span className="title-font base font-bold pl-1 text-white">
                     {Math.ceil(Math.random() * (1.8 - 0.5) + 0.5)} ETH
-                  </span>
+                  </span> */}
+                  {isInCart ? <>Remove from Cart</> : <>Add to Cart</>}
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => handleWishlist()}
+                  className="flex items-center mt-4 w-3/12 ml-3 rounded-sm min-w-8 bg-black text-sm font-semibold text-white "
+                >
+                  {isInWishlist ? (
+                    <>
+                      <ImCross className="text-red-400 text-2xl font-extrabold" />
+                    </>
+                  ) : (
+                    <>
+                      <CiViewList className="text-green-400 text-2xl font-extrabold" />
+                    </>
+                  )}
                 </Button>
               </div>
             </div>
