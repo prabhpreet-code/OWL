@@ -22,11 +22,17 @@ export type FormContextTypes = {
 
 export const useFormStore = create((set) => ({
   Form: {
-    username: "",
-    email: "",
-    bio: "",
+    ID: "",
+    username: " ",
+    email: " ",
+    bio: " ",
     picture: "",
     tags: [],
+    walletAddress: "",
+    CreatedAt: " ",
+    DeletedAt: "",
+    UpdatedAt: "",
+    gamesOwned: [],
   },
   setForm: (updatedForm: FormContextTypes) =>
     set(() => ({ Form: updatedForm })),
@@ -87,6 +93,27 @@ export const useWishlistStore = create<WishlistState>((set) => ({
       }),
     }));
   },
+<<<<<<< HEAD
+=======
+}));
+
+export const useCartStore = create<CartState>((set) => ({
+  cart: [],
+  addToCart: (game: Cart) => {
+    set((state) => ({ cart: [...state.cart, game] }));
+  },
+  removeFromCart: (gameID: number) => {
+    set((state) => ({
+      cart: state.cart.filter((game) => {
+        if ("index" in game) {
+          return game.index !== gameID;
+        } else {
+          return game.id !== gameID;
+        }
+      }),
+    }));
+  },
+>>>>>>> dbe52515ad1a7cfcad0225d60da85dfb7a644e83
 }));
 
 export const useCartStore = create<CartState>((set) => ({
@@ -106,3 +133,22 @@ export const useCartStore = create<CartState>((set) => ({
     }));
   },
 }));
+
+// export const useUserStore = create((set) => ({
+//   user: {
+//     ID: "",
+//     username: " ",
+//     email: " ",
+//     bio: " ",
+//     picture: "",
+//     tags: [],
+//     walletAddress: "",
+//     CreatedAt: " ",
+//     DeletedAt: "",
+//     UpdatedAt: "",
+//     gamesOwned: [],
+//   },
+//   setUser: (info: any) => {
+//     set(() => ({ user: info }));
+//   },
+// }));

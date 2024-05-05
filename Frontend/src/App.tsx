@@ -21,6 +21,7 @@ import { ProtectedRoutes } from "./components/ProtectedRoutes";
 import "./App.css";
 
 import { SkeletonGrid } from "./components/Marketplace/SkeletonGrid";
+import Loading from "./components/Loading";
 
 function App() {
   return (
@@ -45,7 +46,7 @@ function App() {
             path="/profile"
             element={
               <ProtectedRoutes>
-                <Suspense fallback={<h1>loading</h1>}>
+                <Suspense fallback={<Loading/>}>
                   <Profile />
                 </Suspense>
               </ProtectedRoutes>

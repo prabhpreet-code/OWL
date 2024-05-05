@@ -9,6 +9,11 @@ import { useAccount } from "wagmi";
 import { config, projectId } from "@/contexts/WalletContext";
 import { MdShoppingCart } from "react-icons/md";
 import { useCartStore, useWishlistStore } from "@/store/store";
+<<<<<<< HEAD
+
+import { updateWishlist } from "@/api/user/updateWishlist";
+=======
+>>>>>>> dbe52515ad1a7cfcad0225d60da85dfb7a644e83
 
 export type GameProps = {
   index: number;
@@ -34,18 +39,30 @@ export default function Games({
   const navigate = useNavigate();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlistStore();
   const { cart, addToCart, removeFromCart } = useCartStore();
+<<<<<<< HEAD
+
+=======
+>>>>>>> dbe52515ad1a7cfcad0225d60da85dfb7a644e83
   const isInCart = cart.some((game) => game.name === name);
 
   const isInWishlist = wishlist.some((game) => game.name === name);
 
   const modal = createWeb3Modal({ config, projectId });
 
+<<<<<<< HEAD
+  const handleWishlist = async () => {
+=======
   const handleWishlist = () => {
+>>>>>>> dbe52515ad1a7cfcad0225d60da85dfb7a644e83
     if (isConnected) {
       if (isInWishlist) {
         toast.error(`${name} removed from Wishlist`);
         removeFromWishlist(index);
       } else {
+<<<<<<< HEAD
+        await updateWishlist(wishlist, user.ID);
+=======
+>>>>>>> dbe52515ad1a7cfcad0225d60da85dfb7a644e83
         toast.success(`${name} added to Wishlist`);
         addToWishlist({
           index,
@@ -63,9 +80,17 @@ export default function Games({
     if (isConnected) {
       if (isInCart) {
         toast.error(`${name} removed from Wishlist`);
+<<<<<<< HEAD
+
         removeFromCart(index);
       } else {
         toast.success(`${name} added to Wishlist`);
+
+=======
+        removeFromCart(index);
+      } else {
+        toast.success(`${name} added to Wishlist`);
+>>>>>>> dbe52515ad1a7cfcad0225d60da85dfb7a644e83
         addToCart({
           index,
           url,

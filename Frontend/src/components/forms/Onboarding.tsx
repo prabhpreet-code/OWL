@@ -7,11 +7,10 @@ import { useEffect, useRef, useState } from "react";
 import DragnDrop from "./DragnDrop";
 
 import sendFileToIPFS from "@/utils/sendFilestoIpfs";
-import { useFormStore } from "@/store/store";
+import { useFormStore} from "@/store/store";
 import { updateUser } from "@/api/user/updateUser";
 import { useAccount } from "wagmi";
-import { getAllUsers } from "@/api/user/createUser";
-import { findUser } from "@/api/user/findUser";
+
 
 export default function Onboarding() {
   const multiselectRef = useRef(null);
@@ -20,6 +19,7 @@ export default function Onboarding() {
   const { Form, setForm }: any = useFormStore();
 
   const [selected, setSelected] = useState([]);
+
   const form = useForm({
     defaultValues: {
       ID: "",
@@ -53,14 +53,14 @@ export default function Onboarding() {
       })
       .catch((err) => console.log(err));
     // data.picture = hash;
-    const fetchAllUsers = await getAllUsers();
-    const user = fetchAllUsers?.find((user) => user.walletAddress === address);
+
     console.log(user);
-    if (user !== undefined) {
-      await updateUser(data, user.ID);
+    const userInfo = sessionStorage.getItem("current-user");
+    if (userInfo !== undefined) {
+      await updateUser(data, userInfo?.ID);
     }
 
-    setForm(data);
+    setForm({ ...Form, ["ID"]: userInfo.ID });
 
     console.log(Form);
     console.log(data);
@@ -68,6 +68,7 @@ export default function Onboarding() {
 
   return (
     <section>
+     
       <div className="flex flex-col  justify-start px-4 ">
         <h2 className="text-center text-8xl  leading-tight text-white font-extrabold tracking-tight mb-12">
           Tell us more about you...

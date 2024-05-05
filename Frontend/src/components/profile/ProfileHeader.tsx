@@ -1,4 +1,4 @@
-import { getAllUsers } from "@/api/user/createUser";
+
 
 import { useFormStore, useSidebarStore } from "@/store/store";
 import { Button } from "@nextui-org/react";
@@ -12,23 +12,22 @@ export default function ProfileHeader() {
 
   const { Form, setForm }: any = useFormStore();
 
+  // const { user }: any = useUserStore();
+  const userInfo = sessionStorage.getItem("current-user");
+
   const { address } = useAccount();
 
   useEffect(() => {
     const getUserData = async () => {
-      const fetchAllUsers = await getAllUsers();
-      const user = fetchAllUsers?.findLast(
-        (user) => user.walletAddress === address
-      );
-      console.log(user);
+      // console.log(user);
 
-      if (user != undefined) {
-        setForm(user);
+      if (userInfo !== undefined) {
+        setForm(JSON.parse(userInfo));
       }
       console.log(Form);
     };
     getUserData();
-  }, []);
+  }, [userInfo]);
 
   return (
     <section className=" bg-[rgba(255,255,255,0.056)] p-14 dark:bg-gray-900 dark:text-gray-100 mb-20 rounded-lg">

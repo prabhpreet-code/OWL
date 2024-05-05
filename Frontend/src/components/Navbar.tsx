@@ -11,17 +11,15 @@ import {
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import React from "react";
-import { useAccount, useConnect } from "wagmi";
-import { injected } from "wagmi/connectors";
+import { useAccount } from "wagmi";
+
 import { createUser, getAllUsers } from "@/api/user/createUser";
-import { toast } from "sonner";
-import { config } from "@/contexts/WalletContext";
-import { create } from "domain";
+
 
 export function NavbarComp() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { address, isConnected } = useAccount();
-  const { connect } = useConnect();
+
   const menuItems = [
     {
       title: "Marketplace",
@@ -38,6 +36,19 @@ export function NavbarComp() {
   useEffect(() => {
     const handleConnect = async () => {
       const fetchAllUsers = await getAllUsers();
+<<<<<<< HEAD
+      const user = fetchAllUsers?.findLast(
+        (user) => user.walletAddress === address
+      );
+      sessionStorage.setItem("current-user", JSON.stringify(user));
+      console.log(user);
+
+      if (isConnected && user === undefined) {
+        const new_User = await createUser(address);
+        setUser(new_User);
+      }
+      //  toast.error("Awesome");
+=======
       console.log(fetchAllUsers);
       const doesUserExist = fetchAllUsers?.find((user: any) => {
         user.walletAddress === address;
@@ -47,6 +58,7 @@ export function NavbarComp() {
          await createUser(address)
       }
         //  toast.error("Awesome");
+>>>>>>> dbe52515ad1a7cfcad0225d60da85dfb7a644e83
     };
     handleConnect();
   }, [isConnected]);
