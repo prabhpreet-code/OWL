@@ -21,19 +21,21 @@ type UserInput struct {
 
 type UserInputUpdate struct {
   Username string `json:username`
+  WalletAddress string `json:walletAddress`
   Email string `json:email`
-  Bio string `json:"bio" validate:"required"`
+  Bio string `json:"bio"`
   Picture string `json:"picture`
   Tags []string `json:tags`
-  WishList []string `json:"wishList" "`
-  GamesOwned []string `json:"gamesOwned" "`
-  
+}
+
+type UserWishlistUpdate struct {
+  WishList []string `json:wishList`
 }
 
 //
 func CheckUsers(w http.ResponseWriter, r *http.Request){
 
-  fmt.Println("sukhuuuuuuu")
+  
   quest := "hello world"
   json.NewEncoder(w).Encode(quest) 
 }
@@ -136,27 +138,59 @@ func UpdateUser(w http.ResponseWriter, r *http.Request){
     return
   }
 
-  var input UserInputUpdate 
+  var inputUpdate UserInputUpdate 
 
   body, _ := io.ReadAll(r.Body)
-  _ = json.Unmarshal(body, &input)
+  _ = json.Unmarshal(body, &inputUpdate)
 
   validate = validator.New()
-  err := validate.Struct(input)
+  err := validate.Struct(inputUpdate)
 
   if err != nil {
     utils.RespondWithError(w, http.StatusBadRequest, "Validation Error")
     return 
   }
-  user.Username=input.Username
-  user.Email=input.Email
-  user.Bio = input.Bio
-  user.Picture=input.Picture
-  user.Tags=input.Tags
-  user.WishList = input.WishList
-  user.GamesOwned = input.GamesOwned
+  user.Username=inputUpdate.Username
+  user.Email=inputUpdate.Email
+  user.Bio = inputUpdate.Bio
+  user.Picture=inputUpdate.Picture
+  user.Tags=inputUpdate.Tags
+  user.WalletAddress = inputUpdate.WalletAddress
 
   models.DB.Save(&user)
 
   json.NewEncoder(w).Encode(user)
 }
+
+func UpdateWishList(w http.ResponseWriter, r *http.Request){
+  w.Header().Set("Content-Type", "application/json")
+
+  id := mux.Vars(r)["id"]
+  var user models.User
+
+  if err := models.DB.Where("id = ?", id).First(&user).Error; err != nil{
+    utils.RespondWithError(w, http.StatusNotFound, "User not found")
+    return
+  }
+
+  var inputWishlistUpdate UserWishlistUpdate 
+
+  body, _ := io.ReadAll(r.Body)
+  _ = json.Unmarshal(body, &inputWishlistUpdate)
+
+  validate = validator.New()
+  err := validate.Struct(inputWishlistUpdate)
+
+
+  if err != nil {
+    utils.RespondWithError(w, http.StatusBadRequest, "Validation Error")
+    return 
+  }
+
+  user.WishList = append(user.WishList, inputWishlistUpdate.WishList...)
+
+  models.DB.Save(&user)
+
+  json.NewEncoder(w).Encode(user)
+}
+
