@@ -32,7 +32,10 @@ export default function Franchise({ id, detailsResponse }: any) {
       {!franchiseQuery.data ||
       (franchiseQuery.data.length === 1 &&
         franchiseQuery.data[0].status === 400) ? (
-        <div> Sadly this games does not belong to any franchise.</div>
+        <div className="font-urbanist text-3xl">
+          {" "}
+          Sadly this game does not belong to any franchise.
+        </div>
       ) : (
         <section className="">
           <div className="bg-gradient-to-r  from-blue-500 to-blue-900 text-transparent bg-clip-text font-inter flex justify-between text-left text-3xl font-semibold mb-8 tracking-wider ">

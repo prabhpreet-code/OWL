@@ -1,6 +1,6 @@
-export default function Loading() {
+export default function Loading({ className }: { className: string }) {
   return (
-    <section className="h-screen w-screen flex justify-center items-center">
+    <section className={`${className}`}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 100 100"

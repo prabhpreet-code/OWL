@@ -1,8 +1,9 @@
 import axios from "axios";
 import { URLEndpoint } from "../games/getGames";
-import { useAccount } from "wagmi";
+
 
 type updateUser = {
+  user:{
   username: string;
   email: string;
   bio: string;
@@ -10,20 +11,18 @@ type updateUser = {
   picture: string;
   walletAddress: `0x${string}` | undefined;
   wishlist: any[];
+
+  };
+  id:number;
+  
 };
 export const updateUser = async (
-<<<<<<< HEAD
   { username, email, bio, tags, picture, walletAddress },
-  id,
-  wishlist: updateUser
-=======
-  { username, email, bio, tags, picture, walletAddress, wishlist },
-  id: updateUser
->>>>>>> dbe52515ad1a7cfcad0225d60da85dfb7a644e83
+  id
 ) => {
   // const { address } = useAccount();
 
-  console.log(username, picture,wishlist);
+  console.log(username, picture, id);
   await axios
     .put(`${URLEndpoint}user/${id}`, {
       username: username,
@@ -32,7 +31,6 @@ export const updateUser = async (
       tags: tags,
       picture: picture,
       walletAddress: walletAddress,
-      wishList: wishlist,
     })
     .then((result) => {
       console.log(result);

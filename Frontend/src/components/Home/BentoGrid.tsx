@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { createRef, useEffect, useRef, useState } from "react";
 import { owlFeatures } from "@/utils/dummydata/featuresData";
 import useDynamicRefs from "use-dynamic-refs";
 import Lottie from "react-lottie";
@@ -7,21 +7,30 @@ import "../../App.css";
 
 import { ArrowRight } from "lucide-react";
 export function BentoGrid() {
-  const [RefNumber, setRefNumber] = useState("1");
-  const [getRef, setRef] = useDynamicRefs();
+  const [RefNumber, setRefNumber] = useState(1);
+  const number_array = [1, , 3, 4, 5];
+  const refs_Array = number_array.map((eachId) => ({
+    id: eachId,
+    ref: createRef(),
+  }));
+  const containerRef = useRef(RefNumber);
+  console.log(refs_Array);
+  
   const [play, setPlay] = useState<boolean>(true);
 
   useEffect(() => {
-    const containerRef = getRef(RefNumber);
-    function mouseMoveEvent(e: any) {
-      const rect = containerRef?.current?.getBoundingClientRect(),
-        x = e.clientX - rect?.left,
-        y = e.clientY - rect?.top;
+    const handleRefs = () => {
+      function mouseMoveEvent(e: any) {
+        const rect = containerRef?.current?.getBoundingClientRect(),
+          x = e.clientX - rect?.left,
+          y = e.clientY - rect?.top;
 
-      containerRef.current?.style.setProperty("--mouse-x", `${x}px`);
-      containerRef.current?.style.setProperty("--mouse-y", `${y}px`);
-    }
-    containerRef.current.addEventListener("mousemove", mouseMoveEvent);
+        containerRef.current?.style.setProperty("--mouse-x", `${x}px`);
+        containerRef.current?.style.setProperty("--mouse-y", `${y}px`);
+      }
+      containerRef?.current?.addEventListener("mousemove", mouseMoveEvent);
+    };
+   
   }, [RefNumber]);
   function handleMouseEnter(id: string) {
     setRefNumber(id);
@@ -36,7 +45,7 @@ export function BentoGrid() {
           className={` card row-span-1 h-[400px] mb-10 rounded-xl   bg-neutral-900  ${
             index === 3 || index === 6 ? "col-span-2" : ""
           } `}
-          ref={setRef(element.id)}
+          ref={refs_Array[index]?.ref.current}
           onMouseEnter={() => handleMouseEnter(element.id)}
           onMouseLeave={() => setPlay(true)}
         >

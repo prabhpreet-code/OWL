@@ -93,27 +93,6 @@ export const useWishlistStore = create<WishlistState>((set) => ({
       }),
     }));
   },
-<<<<<<< HEAD
-=======
-}));
-
-export const useCartStore = create<CartState>((set) => ({
-  cart: [],
-  addToCart: (game: Cart) => {
-    set((state) => ({ cart: [...state.cart, game] }));
-  },
-  removeFromCart: (gameID: number) => {
-    set((state) => ({
-      cart: state.cart.filter((game) => {
-        if ("index" in game) {
-          return game.index !== gameID;
-        } else {
-          return game.id !== gameID;
-        }
-      }),
-    }));
-  },
->>>>>>> dbe52515ad1a7cfcad0225d60da85dfb7a644e83
 }));
 
 export const useCartStore = create<CartState>((set) => ({

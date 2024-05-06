@@ -12,6 +12,7 @@ import { useSidebarStore } from "@/store/store";
 
 import { useAccount } from "wagmi";
 import Footer from "@/components/Home/Footer";
+import { DrawerDialog } from "../components/common/Drawer";
 
 export default function Profile() {
   const { buttonIndex }: any = useSidebarStore();
@@ -54,6 +55,6 @@ function switch_Index(index: number) {
     case 3:
       return <Wishlist />;
     case 4:
-      return <Onboarding />;
+      return <DrawerDialog />;
   }
 }

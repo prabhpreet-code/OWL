@@ -52,11 +52,11 @@ export default function GameGrid() {
   const slicedData = games?.slice(firstPostIndex, lastPostIndex);
 
   return (
-    <div className="flex flex-col w-full pr-24 -ml-10 items-center justify-center">
+    <div className="flex flex-col w-full pr-24 -ml-10 mb-12 items-center justify-center">
       {isLoading ? (
         <SkeletonGrid />
       ) : (
-        <div className="grid grid-cols-1 md:grid-rows-3 md:grid-cols-3 sm:grid-cols-2   gap-5  place-items-center">
+        <div className="grid grid-rows-3 md:grid-rows-3 md:grid-cols-3 sm:grid-cols-2   gap-5 gap-y-8  place-items-center">
           {slicedData?.map(
             (
               element: {

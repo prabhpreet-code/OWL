@@ -1,5 +1,4 @@
 import Slider from "react-slick";
-import Games from "../Marketplace/Games";
 import gsap from "gsap";
 import { useQuery } from "react-query";
 

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import owl from "../../assets/owl.png";
 
 export default function Footer() {
   return (
@@ -8,6 +9,7 @@ export default function Footer() {
           <div className="w-auto p-8">
             <Link to="/">
               <div className="inline-flex items-center">
+                <img width={40} height={40} src={owl} alt="owl_logo" />
                 <span className="ml-4 text-lg font-bold">OWL</span>
               </div>
             </Link>

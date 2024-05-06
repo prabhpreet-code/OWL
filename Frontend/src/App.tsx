@@ -33,7 +33,11 @@ function App() {
           <Route
             path="/market"
             element={
-              <Suspense fallback={<SkeletonGrid />}>
+              <Suspense
+                fallback={
+                  <Loading className="h-screen w-screen flex justify-center items-center" />
+                }
+              >
                 {" "}
                 <MarketPlace />
               </Suspense>
@@ -46,7 +50,11 @@ function App() {
             path="/profile"
             element={
               <ProtectedRoutes>
-                <Suspense fallback={<Loading/>}>
+                <Suspense
+                  fallback={
+                    <Loading className="h-screen w-screen flex justify-center items-center" />
+                  }
+                >
                   <Profile />
                 </Suspense>
               </ProtectedRoutes>

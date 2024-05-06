@@ -22,7 +22,9 @@ export default function DlcsComp({ detailsResponse, id }: any) {
     <div>
       {!dlcData.data ||
       (dlcData.data.length === 1 && dlcData.data[0].status === 400) ? (
-        <div>No DLC's available for this game.</div>
+        <div className="font-urbanist text-3xl">
+          No DLC's available for this game.
+        </div>
       ) : (
         <section className="flex flex-col ">
           <span className="bg-gradient-to-r from-violet-400 text-transparent bg-clip-text text-4xl font-semibold font-inter text-left">

@@ -9,10 +9,17 @@ import { gsap } from "gsap";
 import { useEffect, useRef } from "react";
 
 import { ScrollTrigger } from "gsap/all";
+import { useQuery } from "@tanstack/react-query";
+import { getGames } from "@/api/games/getGames";
 
 function Home() {
   const component = useRef(null);
   gsap.registerPlugin(ScrollTrigger);
+  const gameData = useQuery({
+    queryKey: ["game-query"],
+    queryFn: getGames,
+    staleTime: 100000,
+  });
 
   useEffect(() => {
     const ctx = gsap.context(() => {

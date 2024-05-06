@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDropzone } from "react-dropzone";
 import { styles } from "../../utils/DndStyles";
 
-export default function DragnDrop({ form }) {
+export default function DragnDrop({ form }: any) {
   const [files, setFiles] = useState([]);
 
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =
@@ -10,9 +10,9 @@ export default function DragnDrop({ form }) {
       accept: {
         "image/*": [],
       },
-      onDrop: (acceptedFiles) => {
+      onDrop: (acceptedFiles: any[]) => {
         setFiles(
-          acceptedFiles.map((file:any) =>
+          acceptedFiles.map((file: any) =>
             Object.assign(file, {
               preview: URL.createObjectURL(file),
             })
@@ -60,7 +60,7 @@ export default function DragnDrop({ form }) {
         className="flex justify-center mt-12"
         style={styles.thumbsContainer}
       >
-       {/* <div style={styles.thumb}>
+        {/* <div style={styles.thumb}>
            <img
             src={`https://ipfs.io/ipfs/${form
               .watch("profile_picture")

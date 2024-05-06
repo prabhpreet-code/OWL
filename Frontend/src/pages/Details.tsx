@@ -2,19 +2,14 @@ import { NavbarComp } from "@/components/Navbar";
 import GameDetails from "@/components/Detailpanel/GameDetails";
 import TextSection from "@/components/Detailpanel/TextSection";
 import Footer from "@/components/Home/Footer";
-import { SkeletonCard } from "@/components/common/SkeletonCard";
-
 import { useParams } from "react-router-dom";
-
 import { useGetVideos } from "@/hooks/useGetVideos";
-
-import { useGetDetails } from "@/hooks/useGetDetails";
-
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
 import Suggestions from "@/components/Detailpanel/Suggestions";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { SkeletonGrid } from "@/components/Marketplace/SkeletonGrid";
+import { useGetDetails } from "@/hooks/useGetDetails";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export type DetailType = {
   id: number;
@@ -54,11 +49,6 @@ export function GameDetailsPage() {
 
   const query = new QueryClient();
 
-  // console.log(detailsResponse);
-
-  // const companyDetails = useGetCompany(id);
-  // console.log(companyDetails);
-
   const videoResponse = useGetVideos(id);
 
   return (
@@ -93,7 +83,7 @@ export function GameDetailsPage() {
         <div className="px-2 py-4 flex mb-5 justify-between flex-col sm:px-30 md:px-10 h-max">
           <NavbarComp />
           {detailsResponse?.isLoading || videoResponse?.isLoading ? (
-            <SkeletonCard />
+            <SkeletonGrid />
           ) : (
             <div>
               <GameDetails

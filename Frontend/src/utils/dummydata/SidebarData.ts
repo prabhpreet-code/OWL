@@ -43,4 +43,4 @@ export const SidebarData = [
   },
 ];
 
-export const profileSidebar = ["Home", "Chat", "Orders", "Wishlist", "Profile"];
+export const profileSidebar = ["Home", "Chat", "Orders", "Wishlist"];

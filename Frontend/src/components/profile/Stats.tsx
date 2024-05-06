@@ -14,7 +14,7 @@ export default function Stats() {
                 {dummyStats[id]}:
               </span>
               <span className=" text-2xl font-jura text-green-500 font-semibold">
-                {Math.round(Math.random(2, 100) * 100)}
+                {Math.floor(Math.random() * 3 + 1)}
               </span>
             </li>
           ))}

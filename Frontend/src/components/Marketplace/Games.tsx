@@ -1,6 +1,6 @@
 import timeConverter from "@/utils/unixTimeConvert";
 import { useNavigate } from "react-router-dom";
-import { ImCross } from "react-icons/im";
+import { RiSubtractFill } from "react-icons/ri";
 import { toast } from "sonner";
 import { Button } from "@nextui-org/react";
 import { createWeb3Modal } from "@web3modal/wagmi/react";
@@ -9,11 +9,8 @@ import { useAccount } from "wagmi";
 import { config, projectId } from "@/contexts/WalletContext";
 import { MdShoppingCart } from "react-icons/md";
 import { useCartStore, useWishlistStore } from "@/store/store";
-<<<<<<< HEAD
 
 import { updateWishlist } from "@/api/user/updateWishlist";
-=======
->>>>>>> dbe52515ad1a7cfcad0225d60da85dfb7a644e83
 
 export type GameProps = {
   index: number;
@@ -39,30 +36,19 @@ export default function Games({
   const navigate = useNavigate();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlistStore();
   const { cart, addToCart, removeFromCart } = useCartStore();
-<<<<<<< HEAD
-
-=======
->>>>>>> dbe52515ad1a7cfcad0225d60da85dfb7a644e83
   const isInCart = cart.some((game) => game.name === name);
 
   const isInWishlist = wishlist.some((game) => game.name === name);
 
   const modal = createWeb3Modal({ config, projectId });
 
-<<<<<<< HEAD
   const handleWishlist = async () => {
-=======
-  const handleWishlist = () => {
->>>>>>> dbe52515ad1a7cfcad0225d60da85dfb7a644e83
     if (isConnected) {
       if (isInWishlist) {
         toast.error(`${name} removed from Wishlist`);
         removeFromWishlist(index);
       } else {
-<<<<<<< HEAD
-        await updateWishlist(wishlist, user.ID);
-=======
->>>>>>> dbe52515ad1a7cfcad0225d60da85dfb7a644e83
+        // await updateWishlist(wishlist, user.ID);
         toast.success(`${name} added to Wishlist`);
         addToWishlist({
           index,
@@ -79,18 +65,12 @@ export default function Games({
   const handleCart = () => {
     if (isConnected) {
       if (isInCart) {
-        toast.error(`${name} removed from Wishlist`);
-<<<<<<< HEAD
+        toast.error(`${name} removed from Cart`);
 
         removeFromCart(index);
       } else {
-        toast.success(`${name} added to Wishlist`);
+        toast.success(`${name} added to Cart`);
 
-=======
-        removeFromCart(index);
-      } else {
-        toast.success(`${name} added to Wishlist`);
->>>>>>> dbe52515ad1a7cfcad0225d60da85dfb7a644e83
         addToCart({
           index,
           url,
@@ -107,15 +87,15 @@ export default function Games({
     <div
       key={index}
       // onClick={() => navigate(`/game/${index}`)}
-      className={`${className} cursor-pointer `}
+      className={`${className} justify-around cursor-pointer divide-y-2 divide-[gray]/25 hover:bg-gray-600/25 hover:drop-shadow-[0_35px_35px_rgba(255,255,255,0.15)] opacity-75 hover:opacity-100 delay-75  transition-all ease-in-out pb-12 `}
+      onClick={() => navigate(`/game/${index}`)}
     >
       <img
         src={url?.replace("thumb", "1080p")}
         alt="Laptop"
-        onClick={() => navigate(`/game/${index}`)}
-        className=" w-full rounded-t-md object-cover"
+        className=" w-full h-96 rounded-t-md object-cover"
       />
-      <div className="p-5 font-inter">
+      <div className="p-5 font-inter ">
         <p className=" line-clamp-2 text-lg font-semibold font-jura">{name}</p>
         <p className="mt-3 text-sm line-clamp-2 text-white ">{summary}</p>
         <p className="mt-3 flex justify-between text-sm text-white">
@@ -127,26 +107,29 @@ export default function Games({
           {Math.round(rating)}
         </p>
         <p className="mt-3 text-left text-sm text-white  ">
-          {genres?.split(", ").map((genres, index) => (
-            <span
-              key={index}
-              className="mb-2 mr-2  rounded-full inline-flex  bg-gray-100 px-2 py-1 text-[10px] font-semibold text-gray-900"
-            >
-              {genres}
-            </span>
-          ))}
+          {genres
+            ?.split(", ")
+            .slice(0, 2)
+            .map((genres, index) => (
+              <span
+                key={index}
+                className="mb-2 mr-2  rounded-full inline-flex  bg-gray-100 px-2 py-1 text-[9px] font-semibold text-gray-900"
+              >
+                {genres}
+              </span>
+            ))}
         </p>
         <div className="flex flex-row ">
           <Button
             type="button"
             onClick={() => handleCart()}
-            className="mt-4 w-8/12 justify-center rounded-sm bg-blue-900 text-xs font-semibold text-white"
+            className="mt-4 w-8/12 justify-center rounded-sm bg-slate-300/25 text-xs font-semibold text-white"
           >
             {isInCart ? (
-              <>
+              <div className="flex items-center">
                 Remove from Cart
-                <MdShoppingCart className="text-xl " />
-              </>
+                <RiSubtractFill className="text-blue-500 text-2xl font-extrabold" />
+              </div>
             ) : (
               <>
                 Add to Cart
@@ -158,11 +141,11 @@ export default function Games({
           <Button
             type="button"
             onClick={() => handleWishlist()}
-            className="flex mt-4 w-4/12 mx-1 min-w-6 rounded-sm bg-blue-900 text-sm font-semibold text-white "
+            className="flex mt-4 w-4/12 mx-1 min-w-6 rounded-sm bg-slate-300/25 text-sm font-semibold text-white "
           >
             {isInWishlist ? (
               <>
-                <ImCross className="text-red-400 text-2xl font-extrabold" />
+                <RiSubtractFill className="text-blue-500 text-3xl font-extrabold" />
               </>
             ) : (
               <>

@@ -8,6 +8,7 @@ import { useAccount } from "wagmi";
 import { config, projectId } from "@/contexts/WalletContext";
 import { createWeb3Modal } from "@web3modal/wagmi/react";
 import { useWishlistStore, useCartStore } from "@/store/store";
+import { RiSubtractFill } from "react-icons/ri";
 
 type dataType = {
   id: number;
@@ -151,13 +152,14 @@ export default function GameDetails({
                   onClick={() => handleCart()}
                   className="flex w-9/12 items-center mt-4 rounded-sm bg-black text-sm font-semibold text-white "
                 >
-                  {/* <span className=" flex title-font text-base font-bold text-violet-400">
-                    Buy
-                  </span>
-                  <span className="title-font base font-bold pl-1 text-white">
-                    {Math.ceil(Math.random() * (1.8 - 0.5) + 0.5)} ETH
-                  </span> */}
-                  {isInCart ? <>Remove from Cart</> : <>Add to Cart</>}
+                  {isInCart ? (
+                    <>
+                      Remove from Cart{" "}
+                      <RiSubtractFill className="text-3xl text-blue-400" />
+                    </>
+                  ) : (
+                    <>Add to Cart </>
+                  )}
                 </Button>
                 <Button
                   type="button"
@@ -166,7 +168,7 @@ export default function GameDetails({
                 >
                   {isInWishlist ? (
                     <>
-                      <ImCross className="text-red-400 text-2xl font-extrabold" />
+                      <RiSubtractFill className="text-3xl text-blue-400" />
                     </>
                   ) : (
                     <>

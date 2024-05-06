@@ -15,7 +15,6 @@ import { useAccount } from "wagmi";
 
 import { createUser, getAllUsers } from "@/api/user/createUser";
 
-
 export function NavbarComp() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { address, isConnected } = useAccount();
@@ -36,29 +35,18 @@ export function NavbarComp() {
   useEffect(() => {
     const handleConnect = async () => {
       const fetchAllUsers = await getAllUsers();
-<<<<<<< HEAD
+      console.log(fetchAllUsers);
       const user = fetchAllUsers?.findLast(
-        (user) => user.walletAddress === address
+        (user: any) => user.walletAddress === address
       );
       sessionStorage.setItem("current-user", JSON.stringify(user));
       console.log(user);
 
       if (isConnected && user === undefined) {
         const new_User = await createUser(address);
-        setUser(new_User);
+        sessionStorage.setItem("current-user", JSON.stringify(new_User));
       }
       //  toast.error("Awesome");
-=======
-      console.log(fetchAllUsers);
-      const doesUserExist = fetchAllUsers?.find((user: any) => {
-        user.walletAddress === address;
-      });
-      console.log(doesUserExist);
-      if(isConnected && doesUserExist !== undefined){
-         await createUser(address)
-      }
-        //  toast.error("Awesome");
->>>>>>> dbe52515ad1a7cfcad0225d60da85dfb7a644e83
     };
     handleConnect();
   }, [isConnected]);
@@ -72,7 +60,7 @@ export function NavbarComp() {
         <div className="inline-flex items-center space-x-2">
           <Link to="/">
             <span>
-              <img width={40} height={40} src={owl} />
+              <img width={40} height={40} src={owl} alt="owl_logo" />
             </span>
           </Link>
         </div>
@@ -98,28 +86,6 @@ export function NavbarComp() {
           <div></div>
         )}
       </NavigationMenuList>
-
-      {/* <button
-        onClick={() =>
-          connect({
-            config,
-            connector: injected(),
-            options: {
-              onSuccess: () => handleConnect,
-            },
-          })
-        }
-        className="relative px-5 py-3 overflow-hidden font-medium text-gray-600 bg-gray-100 border border-gray-100 rounded-lg shadow-inner group"
-      >
-        <span className="absolute top-0 left-0 w-0 h-0 transition-all duration-200 border-t-2 border-gray-600 group-hover:w-full ease"></span>
-        <span className="absolute bottom-0 right-0 w-0 h-0 transition-all duration-200 border-b-2 border-gray-600 group-hover:w-full ease"></span>
-        <span className="absolute top-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
-        <span className="absolute bottom-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
-        <span className="absolute inset-0 w-full h-full duration-300 delay-300 bg-background opacity-0 group-hover:opacity-100"></span>
-        <span className="relative transition-colors duration-300 delay-200 group-hover:text-white ease font-inter">
-          Connect Wallet
-        </span>
-      </button> */}
 
       <w3m-button />
     </NavigationMenu>

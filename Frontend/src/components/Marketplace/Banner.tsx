@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import { MarketCarousel } from "./MarketCarousel";
+import Loading from "../Loading";
 
 export default function Banner() {
   return (
@@ -10,7 +12,9 @@ export default function Banner() {
       </div>
 
       <div className="rounded-lg w-[80vw] py-6 mr-12 ">
-        <MarketCarousel />
+        <Suspense fallback={<Loading className="" />}>
+          <MarketCarousel />
+        </Suspense>
       </div>
     </div>
   );
