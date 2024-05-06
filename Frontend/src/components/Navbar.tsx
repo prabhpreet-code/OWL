@@ -14,10 +14,13 @@ import React from "react";
 import { useAccount } from "wagmi";
 
 import { createUser, getAllUsers } from "@/api/user/createUser";
+import { MdShoppingCart } from "react-icons/md";
+import { useCartStore } from "@/store/store";
 
 export function NavbarComp() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { address, isConnected } = useAccount();
+  const { cart } = useCartStore();
 
   const menuItems = [
     {
@@ -86,8 +89,28 @@ export function NavbarComp() {
           <div></div>
         )}
       </NavigationMenuList>
+      <NavigationMenuList>
+        {isConnected ? (
+          <div>
+            <MdShoppingCart className="mx-5 text-xl" />
+            {cart.length === 0 ? (
+              <></>
+            ) : (
+              <div className="absolute top-0 bg-red-500 text-white rounded-full w-5 h-4 flex items-center justify-center">
+                {cart.length}
+              </div>
+            )}
 
-      <w3m-button />
+            {/* <div className="absolute top-0 bg-red-500 text-white rounded-full w-5 h-4 flex items-center justify-center">
+              {cart.length}
+            </div> */}
+          </div>
+        ) : (
+          <></>
+        )}
+
+        <w3m-button />
+      </NavigationMenuList>
     </NavigationMenu>
   );
 }

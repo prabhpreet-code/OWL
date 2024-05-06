@@ -50,16 +50,16 @@ export const useFormStore = create((set) => ({
 
 interface Game {
   index: number;
-  url: string;
-  name: string;
+  // url: string;
+  // name: string;
 }
 
 interface GameDetails {
   id: number;
-  name: string;
-  cover: {
-    url: string;
-  };
+  // name: string;
+  // cover: {
+  //   url: string;
+  // };
 }
 
 type Wishlist = Game | GameDetails;

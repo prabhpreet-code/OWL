@@ -36,9 +36,9 @@ export default function Games({
   const navigate = useNavigate();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlistStore();
   const { cart, addToCart, removeFromCart } = useCartStore();
-  const isInCart = cart.some((game) => game.name === name);
+  const isInCart = cart.some((game) => game.index === index );
 
-  const isInWishlist = wishlist.some((game) => game.name === name);
+  const isInWishlist = wishlist.some((game) => game.index === index);
 
   const modal = createWeb3Modal({ config, projectId });
 
@@ -52,8 +52,8 @@ export default function Games({
         toast.success(`${name} added to Wishlist`);
         addToWishlist({
           index,
-          url,
-          name,
+          // url,
+          // name,
         });
       }
     } else {
@@ -73,8 +73,8 @@ export default function Games({
 
         addToCart({
           index,
-          url,
-          name,
+          // url,
+          // name,
         });
       }
     } else {

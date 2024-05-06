@@ -50,9 +50,9 @@ export default function GameDetails({
   const { isConnected } = useAccount();
   const modal = createWeb3Modal({ config, projectId });
   const { cart, addToCart, removeFromCart } = useCartStore();
-  const isInCart = cart.some((game) => game.name === data.name);
+  const isInCart = cart.some((game) => game.id === data.id);
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlistStore();
-  const isInWishlist = wishlist.some((game) => game.name === data.name);
+  const isInWishlist = wishlist.some((game) => game.id === data.id);
 
   const handleWishlist = () => {
     if (isConnected) {
@@ -63,8 +63,8 @@ export default function GameDetails({
         toast.success(`${data.name} added to Wishlist`);
         addToWishlist({
           id: data.id,
-          name: data.name,
-          cover: { url: data.cover.url },
+          // name: data.name,
+          // cover: { url: data.cover.url },
         });
       }
     } else {
@@ -82,8 +82,8 @@ export default function GameDetails({
         toast.success(`${data.name} added to Wishlist`);
         addToCart({
           id: data.id,
-          name: data.name,
-          cover: { url: data.cover.url },
+          // name: data.name,
+          // cover: { url: data.cover.url },
         });
       }
     } else {
