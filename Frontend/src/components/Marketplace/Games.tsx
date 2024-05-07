@@ -11,6 +11,7 @@ import { MdShoppingCart } from "react-icons/md";
 import { useCartStore, useWishlistStore } from "@/store/store";
 
 import { updateWishlist } from "@/api/user/updateWishlist";
+import axios from "axios";
 
 export type GameProps = {
   index: number;
@@ -36,7 +37,7 @@ export default function Games({
   const navigate = useNavigate();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlistStore();
   const { cart, addToCart, removeFromCart } = useCartStore();
-  const isInCart = cart.some((game) => game.index === index );
+  const isInCart = cart.some((game) => game.index === index);
 
   const isInWishlist = wishlist.some((game) => game.index === index);
 
@@ -48,12 +49,13 @@ export default function Games({
         toast.error(`${name} removed from Wishlist`);
         removeFromWishlist(index);
       } else {
-        // await updateWishlist(wishlist, user.ID);
+        const userID = JSON.parse(sessionStorage.getItem("current-user"))?.ID;
         toast.success(`${name} added to Wishlist`);
+        await axios.put(`http://localhost:8080/api/wish-list/${userID}`, {
+          wishList: wishlist.map((item) => String(item.index)),
+        });
         addToWishlist({
           index,
-          // url,
-          // name,
         });
       }
     } else {
