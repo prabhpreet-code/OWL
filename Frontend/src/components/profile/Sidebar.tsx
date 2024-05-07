@@ -4,6 +4,9 @@ import { Button } from "@nextui-org/react";
 
 import { Link, useNavigate } from "react-router-dom";
 import { useDisconnect } from "wagmi";
+import { IoCart, IoHome } from "react-icons/io5";
+import { IoIosChatbubbles } from "react-icons/io";
+import { CiViewList } from "react-icons/ci";
 
 export default function Sidebar() {
   const { buttonIndex, setButtonIndex }: any = useSidebarStore();
@@ -23,17 +26,7 @@ export default function Sidebar() {
         <div className="space-y-3">
           <div className="flex items-center justify-between ">
             <h2 className="font-bold">Dashboard</h2>
-            <button className="p-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-                className="w-5 h-5 fill-current dark:text-gray-100"
-              >
-                <rect width="352" height="32" x="80" y="96"></rect>
-                <rect width="352" height="32" x="80" y="240"></rect>
-                <rect width="352" height="32" x="80" y="384"></rect>
-              </svg>
-            </button>
+            <button className="p-2"></button>
           </div>
 
           <div className="flex-1">
@@ -56,13 +49,7 @@ export default function Sidebar() {
                     to=""
                     className="flex items-center p-2 space-x-3 rounded-md"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 512 512"
-                      className="w-5 h-5 fill-current dark:text-gray-400"
-                    >
-                      <path d="M469.666,216.45,271.078,33.749a34,34,0,0,0-47.062.98L41.373,217.373,32,226.745V496H208V328h96V496H480V225.958ZM248.038,56.771c.282,0,.108.061-.013.18C247.9,56.832,247.756,56.771,248.038,56.771ZM448,464H336V328a32,32,0,0,0-32-32H208a32,32,0,0,0-32,32V464H64V240L248.038,57.356c.013-.012.014-.023.024-.035L448,240Z"></path>
-                    </svg>
+                    <div>{displayIcons(id)}</div>
                     <span>{element}</span>
                   </Link>
                 </li>
@@ -79,4 +66,18 @@ export default function Sidebar() {
       </div>
     </section>
   );
+}
+function displayIcons(index: number) {
+  switch (index) {
+    case 0:
+      return <IoHome className="text-blue-400 text-2xl font-extrabold" />;
+    case 1:
+      return (
+        <IoIosChatbubbles className="text-violet-400 text-2xl font-extrabold" />
+      );
+    case 2:
+      return <IoCart className="text-yellow-400 text-2xl font-extrabold" />;
+    case 3:
+      return <CiViewList className="text-green-400 text-2xl font-extrabold" />;
+  }
 }

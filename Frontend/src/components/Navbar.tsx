@@ -8,19 +8,22 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "./ui/navigation-menu";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import React from "react";
 import { useAccount } from "wagmi";
 
 import { createUser, getAllUsers } from "@/api/user/createUser";
 import { MdShoppingCart } from "react-icons/md";
-import { useCartStore } from "@/store/store";
+import { useSidebarStore, useCartStore } from "@/store/store";
+import { Button } from "@nextui-org/react";
 
 export function NavbarComp() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { address, isConnected } = useAccount();
   const { cart } = useCartStore();
+  const { setButtonIndex } = useSidebarStore();
+  const navigate = useNavigate();
 
   const menuItems = [
     {
@@ -91,12 +94,19 @@ export function NavbarComp() {
       </NavigationMenuList>
       <NavigationMenuList>
         {isConnected ? (
-          <div>
-            <MdShoppingCart className="mx-5 text-xl" />
+          <Button
+            className="flex -px-6 bg-inherit hover:bg-[rgba(255,255,255,0.09)] "
+            onClick={() => {
+              navigate("/profile");
+              setButtonIndex(2);
+            }}
+            variant="solid"
+          >
+            <MdShoppingCart className=" text-xl text-white" />
             {cart.length === 0 ? (
-              <></>
+              <div></div>
             ) : (
-              <div className="absolute top-0 bg-red-500 text-white rounded-full w-5 h-4 flex items-center justify-center">
+              <div className="absolute top-0 right-3 font-urbanist bg-red-500 text-white rounded-full w-5 h-4 flex items-center justify-center ">
                 {cart.length}
               </div>
             )}
@@ -104,7 +114,7 @@ export function NavbarComp() {
             {/* <div className="absolute top-0 bg-red-500 text-white rounded-full w-5 h-4 flex items-center justify-center">
               {cart.length}
             </div> */}
-          </div>
+          </Button>
         ) : (
           <></>
         )}
