@@ -39,14 +39,17 @@ export function NavbarComp() {
     const handleConnect = async () => {
       const fetchAllUsers = await getAllUsers();
       console.log(fetchAllUsers);
+      // const userID =
       const user = fetchAllUsers?.findLast(
-        (user: any) => user.walletAddress === address
+        (user: any) => user.walletAddress === address 
       );
       sessionStorage.setItem("current-user", JSON.stringify(user));
+      localStorage.setItem("userID", JSON.stringify(userID));
       console.log(user);
 
       if (isConnected && user === undefined) {
         const new_User = await createUser(address);
+
         sessionStorage.setItem("current-user", JSON.stringify(new_User));
       }
       //  toast.error("Awesome");
