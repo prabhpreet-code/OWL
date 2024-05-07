@@ -18,6 +18,7 @@ func New() http.Handler {
   router.HandleFunc("/api/user/{id}", controllers.UpdateUser).Methods("PUT")
   router.HandleFunc("/api/user/{id}", controllers.DeleteUser).Methods("DELETE")
   router.HandleFunc("/api/wish-list/{id}", controllers.UpdateWishList).Methods("PUT")
+  router.HandleFunc("/api/wish-list/{id}", controllers.DeleteWishList).Methods("DELETE")
   
   // games routes
   router.HandleFunc("/api/getToken", controllers.GetTokenHandler).Methods("GET")
