@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strconv"
+
+	// "strconv"
+	"strings"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gorilla/mux"
@@ -94,7 +96,6 @@ func GetUserById(w http.ResponseWriter, r *http.Request){
   w.Header().Set("Content-Type", "application/json")
 
   id := mux.Vars(r)["id"]
-  token := r.URL.Query().Get("token")
   var user models.User
 
   if err := models.DB.Where("id = ?", id).First(&user).Error; 
@@ -104,81 +105,7 @@ func GetUserById(w http.ResponseWriter, r *http.Request){
     return
   }
 
-
-  var finalArray []map[string]interface{}
-
-  for _, v := range user.WishList {
-    
-  
-    idWishlist, _ := strconv.ParseInt(v, 10, 64)
-    
-  
-    query := []byte(`fields id, release_dates.date, similar_games, dlcs, franchise, platforms, language_supports.id, franchises, parent_game, genres.name, videos, involved_companies.id, name, summary, rating, storyline, cover.url, screenshots.url; where id=` + strconv.FormatInt(idWishlist, 10) + `;`)
-  
-  
-  
-    url := "https://api.igdb.com/v4/games/"
-    req, err := http.NewRequest("POST", url, bytes.NewBuffer(query))
-
-    if err != nil {
-      http.Error(w, err.Error(), http.StatusInternalServerError)
-      return
-    }
-    req.Header.Set("Accept", "application/json")
-    req.Header.Set("Client-ID", "5rqroe548z244rtq0z3yivankoxq7j")
-    req.Header.Set("Authorization", "Bearer "+token)
-    req.Header.Set("Access-Control-Allow-Origin", "http://localhost:8080")
-  
-    client := &http.Client{}
-    resp, err := client.Do(req)
-    if err != nil {
-      http.Error(w, err.Error(), http.StatusInternalServerError)
-      return
-    }
-    defer resp.Body.Close()
-  
-    
-  
-    body, err := io.ReadAll(resp.Body)
-
-    if err != nil {
-      http.Error(w, err.Error(), http.StatusInternalServerError)
-      return
-    }
-
-  
-    var prettyJSON bytes.Buffer
-	 json.Indent(&prettyJSON, body, "", "    ")
-
-	
-
-  var jsonArray []interface{}
-
-	
-	json.Unmarshal([]byte(prettyJSON.String()), &jsonArray)
-	
-	
-	for _, obj := range jsonArray {
-		jsonObj, err := json.MarshalIndent(obj, "", "  ")
-		if err != nil {
-			fmt.Println("Error:", err)
-			return
-		}
-
-    var jsonObject map[string]interface{}
-
-	
-	 json.Unmarshal([]byte(string(jsonObj)), &jsonObject)
-
-
-
-  finalArray = append(finalArray, jsonObject)
-	}
-  
-  
-}
-
-json.NewEncoder(w).Encode(finalArray)
+json.NewEncoder(w).Encode(user)
 
 }
 
@@ -319,3 +246,62 @@ func DeleteWishList(w http.ResponseWriter, r *http.Request){
   json.NewEncoder(w).Encode(user)
 }
 
+func GetWishListById(w http.ResponseWriter, r *http.Request){w.Header().Set("Content-Type", "application/json")
+
+id := mux.Vars(r)["id"]
+token := r.URL.Query().Get("token")
+var user models.User
+
+if err := models.DB.Where("id = ?", id).First(&user).Error; 
+
+err != nil{
+  utils.RespondWithError(w, http.StatusNotFound, "User not found")
+  return
+}
+
+fmt.Println()
+
+strNumbers := make([]string, len(user.WishList))
+for i, num := range user.WishList {
+  strNumbers[i] = num
+}
+
+
+result := strings.Join(strNumbers, ",")
+
+fmt.Println(result) 
+
+query := []byte("fields id, name,cover.url; where id=(" + result + ");")
+
+  url := "https://api.igdb.com/v4/games/"
+  req, err := http.NewRequest("POST", url, bytes.NewBuffer(query))
+
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+  req.Header.Set("Accept", "application/json")
+  req.Header.Set("Client-ID", "5rqroe548z244rtq0z3yivankoxq7j")
+  req.Header.Set("Authorization", "Bearer "+token)
+  req.Header.Set("Access-Control-Allow-Origin", "http://localhost:8080")
+
+  client := &http.Client{}
+  resp, err := client.Do(req)
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+  defer resp.Body.Close()
+
+  
+
+  body, err := io.ReadAll(resp.Body)
+
+  fmt.Println((body))
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+
+w.Write(body)
+}

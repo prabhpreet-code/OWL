@@ -169,10 +169,6 @@ func GetRecommendationsHandler(w http.ResponseWriter, r *http.Request){
 	idStr := r.URL.Query().Get("game_id")
 	// id, _ := strconv.ParseInt(idStr, 10, 64)
 
-
-
-
-	
 query := []byte("fields id, similar_games, themes, release_dates.date, genres.name, videos, involved_companies.company, name, summary, rating, storyline, cover.url, screenshots.url; where id=(" + idStr + ");")
 
 
