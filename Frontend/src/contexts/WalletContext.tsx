@@ -3,11 +3,18 @@ import { WagmiProvider } from "wagmi";
 import { arbitrum, mainnet } from "wagmi/chains";
 import { createWeb3Modal } from "@web3modal/wagmi/react";
 import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
-import {  ReactNode } from "react";
+import { ReactNode } from "react";
 
 // 0. Setup queryClient
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+  },
+});
 
 // 0. Setup queryClient
 

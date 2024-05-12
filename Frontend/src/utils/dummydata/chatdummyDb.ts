@@ -1,0 +1,63 @@
+export const chat = [
+  [
+    {
+      sender: "Me",
+      message: "You got the Photos printed?",
+    },
+    {
+      sender: "other",
+      message: "Bogos pinted?",
+    },
+    {
+      sender: "Me",
+      message: "what?",
+    },
+    {
+      sender: "other",
+      message: "👽",
+    },
+  ],
+  [
+    {
+      sender: "other",
+      message: "Omi biggo bogos binted?",
+    },
+    {
+      sender: "Me",
+      message: "Photos printed?",
+    },
+    {
+      sender: "other",
+      message: "vorp?",
+    },
+    {
+      sender: "Me",
+      message: "👨",
+    },
+  ],
+  [
+    {
+      sender: "other",
+      message: "Nii bnara file jaa",
+    },
+    {
+      sender: "Me",
+      message: "TMKC REEL DEVELOPER",
+    },
+  ],
+];
+
+export const users = [
+  {
+    name: "Aluen👽",
+    message: "👽",
+  },
+  {
+    name: "Humanb👨",
+    message: "Me:👨",
+  },
+  {
+    name: "SANGHARSH FR",
+    message: "Me:TMKC REEL DEVELOPER",
+  },
+];

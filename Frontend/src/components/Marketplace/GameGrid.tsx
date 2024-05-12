@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useButtonStore } from "@/store/store";
 
@@ -23,7 +23,6 @@ import { SkeletonGrid } from "./SkeletonGrid";
 
 export default function GameGrid() {
   const { buttonIndex }: any = useButtonStore();
-
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [postsPerPage] = useState<number>(12);
 
@@ -39,8 +38,6 @@ export default function GameGrid() {
   };
   const gameData = useQuery({
     queryKey: ["game-query"],
-    queryFn: getGames,
-    staleTime: 100000,
     select: (data) => transformData(data, buttonIndex),
   });
 

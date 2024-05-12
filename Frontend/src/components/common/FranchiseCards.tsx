@@ -1,18 +1,11 @@
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Image,
-} from "@nextui-org/react";
+import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 
 export default function FranchiseCards({ url, title, id }: any) {
   const navigate = useNavigate();
   return (
     <Card
-      className=" bg-[rgba(255,255,255,0.02)] h-[200px] w-[200px] opacity-60 hover:opacity-90 hover:bg-[rgba(255,255,255,0.04)]"
+      className=" bg-[rgba(255,255,255,0.02)] h-[200px] w-[200px] opacity-60 hover:opacity-90 hover:bg-[rgba(255,255,255,0.04)] transition-all ease-in delay-75"
       shadow="sm"
       isPressable
       onPress={() => navigate(`/game/${id}`)}
@@ -31,7 +24,6 @@ export default function FranchiseCards({ url, title, id }: any) {
       </CardBody>
       <CardFooter className="text-small justify-between ">
         <b className="font-inter text-xs">{title}</b>
-        
       </CardFooter>
     </Card>
   );

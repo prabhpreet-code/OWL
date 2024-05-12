@@ -13,6 +13,7 @@ import { useSidebarStore } from "@/store/store";
 import { useAccount } from "wagmi";
 import Footer from "@/components/Home/Footer";
 import { DrawerDialog } from "../components/common/Drawer";
+import Chat from "@/components/profile/Chat/Chat";
 
 export default function Profile() {
   const { buttonIndex }: any = useSidebarStore();
@@ -28,7 +29,10 @@ export default function Profile() {
           <Sidebar />
         </div>
         <div className="col-span-4">
-          {buttonIndex === 4 || buttonIndex === 3 || buttonIndex === 2 ? (
+          {buttonIndex === 4 ||
+          buttonIndex === 3 ||
+          buttonIndex === 2 ||
+          buttonIndex === 1 ? (
             <div></div>
           ) : (
             <ProfileHeader />
@@ -49,7 +53,7 @@ function switch_Index(index: number) {
     case 0:
       return <Stats />;
     case 1:
-      return <Wishlist />;
+      return <Chat />;
     case 2:
       return <Orders />;
     case 3:

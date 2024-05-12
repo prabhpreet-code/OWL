@@ -113,6 +113,31 @@ export const useCartStore = create<CartState>((set) => ({
   },
 }));
 
+export const useChatStore = create((set) => ({
+  user: {
+    active: -1,
+    header: "",
+    new: 0,
+    lastmessage: "",
+    info: -1,
+  },
+
+  setUser: (data: any) =>
+    set((state) => ({
+      user: {
+        ...state.user,
+        ["active"]: data.active,
+        ["header"]: data.header,
+      },
+    })),
+  setNew: (data: any) =>
+    set((state) => ({ user: { ...state.user, ["new"]: data } })),
+  setLastMessage: (data: any) =>
+    set((state) => ({ user: { ...state.user, ["lastMessage"]: data } })),
+  setInfo: (data: any) =>
+    set((state) => ({ user: { ...state.user, ["info"]: data } })),
+}));
+
 // export const useUserStore = create((set) => ({
 //   user: {
 //     ID: "",

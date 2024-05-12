@@ -17,67 +17,70 @@ import { WalletProvider } from "./contexts/WalletContext";
 
 //Protected Logic
 import { ProtectedRoutes } from "./components/ProtectedRoutes";
-
-import "./App.css";
-
-import { SkeletonGrid } from "./components/Marketplace/SkeletonGrid";
 import Loading from "./components/Loading";
+import "./App.css";
+import { useQuery } from "@tanstack/react-query";
+import { getGames } from "./api/games/getGames";
 
 function App() {
+  useQuery({
+    queryKey: ["game-query"],
+    queryFn: getGames,
+    staleTime: 100000,
+  
+  });
   return (
     <BrowserRouter>
-      <WalletProvider>
-        <Routes>
-          <Route path="/" element={<Home />} />
+      <Routes>
+        <Route path="/" element={<Home />} />
 
-          <Route
-            path="/market"
-            element={
+        <Route
+          path="/market"
+          element={
+            <Suspense
+              fallback={
+                <Loading className="h-screen w-screen flex justify-center items-center" />
+              }
+            >
+              {" "}
+              <MarketPlace />
+            </Suspense>
+          }
+        />
+
+        <Route path="/game/:id" element={<GameDetailsPage />} />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoutes>
               <Suspense
                 fallback={
                   <Loading className="h-screen w-screen flex justify-center items-center" />
                 }
               >
-                {" "}
-                <MarketPlace />
+                <Profile />
               </Suspense>
-            }
-          />
-
-          <Route path="/game/:id" element={<GameDetailsPage />} />
-
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoutes>
-                <Suspense
-                  fallback={
-                    <Loading className="h-screen w-screen flex justify-center items-center" />
-                  }
-                >
-                  <Profile />
-                </Suspense>
-              </ProtectedRoutes>
-            }
-          />
-        </Routes>
-
-        <ReactQueryDevtools initialIsOpen={false} />
-        <Toaster
-          expand={true}
-          position="bottom-right"
-          theme="dark"
-          richColors={true}
-          visibleToasts={2}
-          toastOptions={{
-            classNames: {
-              toast: "bg-gray-700/55",
-              title: "text-white",
-              description: "text-red-400",
-            },
-          }}
+            </ProtectedRoutes>
+          }
         />
-      </WalletProvider>
+      </Routes>
+
+      <ReactQueryDevtools initialIsOpen={false} />
+      <Toaster
+        expand={true}
+        position="bottom-right"
+        theme="dark"
+        richColors={true}
+        visibleToasts={2}
+        toastOptions={{
+          classNames: {
+            toast: "bg-gray-700/55",
+            title: "text-white",
+            description: "text-red-400",
+          },
+        }}
+      />
     </BrowserRouter>
   );
 }

@@ -17,6 +17,7 @@ import { createUser, getAllUsers } from "@/api/user/createUser";
 import { MdShoppingCart } from "react-icons/md";
 import { useSidebarStore, useCartStore } from "@/store/store";
 import { Button } from "@nextui-org/react";
+import { IoIosChatbubbles } from "react-icons/io";
 
 export function NavbarComp() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -42,17 +43,14 @@ export function NavbarComp() {
     const handleConnect = async () => {
       const fetchAllUsers = await getAllUsers();
       console.log(fetchAllUsers);
-      // const userID =
       const user = fetchAllUsers?.findLast(
-        (user: any) => user.walletAddress === address 
+        (user: any) => user.walletAddress === address
       );
       sessionStorage.setItem("current-user", JSON.stringify(user));
-      localStorage.setItem("userID", JSON.stringify(userID));
       console.log(user);
 
       if (isConnected && user === undefined) {
         const new_User = await createUser(address);
-
         sessionStorage.setItem("current-user", JSON.stringify(new_User));
       }
       //  toast.error("Awesome");
@@ -97,27 +95,39 @@ export function NavbarComp() {
       </NavigationMenuList>
       <NavigationMenuList>
         {isConnected ? (
-          <Button
-            className="flex -px-6 bg-inherit hover:bg-[rgba(255,255,255,0.09)] "
-            onClick={() => {
-              navigate("/profile");
-              setButtonIndex(2);
-            }}
-            variant="solid"
-          >
-            <MdShoppingCart className=" text-xl text-white" />
-            {cart.length === 0 ? (
-              <div></div>
-            ) : (
-              <div className="absolute top-0 right-3 font-urbanist bg-red-500 text-white rounded-full w-5 h-4 flex items-center justify-center ">
-                {cart.length}
-              </div>
-            )}
+          <div className="flex gap-x-2">
+            <Button
+              className="flex -px-6 bg-inherit hover:bg-[rgba(255,255,255,0.09)] "
+              onClick={() => {
+                navigate("/profile");
+                setButtonIndex(2);
+              }}
+              variant="solid"
+            >
+              <MdShoppingCart className=" text-xl text-white" />
+              {cart.length === 0 ? (
+                <div></div>
+              ) : (
+                <div className="absolute top-0 right-3 font-urbanist bg-red-500 text-white rounded-full w-5 h-4 flex items-center justify-center ">
+                  {cart.length}
+                </div>
+              )}
 
-            {/* <div className="absolute top-0 bg-red-500 text-white rounded-full w-5 h-4 flex items-center justify-center">
+              {/* <div className="absolute top-0 bg-red-500 text-white rounded-full w-5 h-4 flex items-center justify-center">
               {cart.length}
             </div> */}
-          </Button>
+            </Button>
+            <Button
+              className="flex -px-6 bg-inherit hover:bg-[rgba(255,255,255,0.09)] "
+              onClick={() => {
+                navigate("/profile");
+                setButtonIndex(1);
+              }}
+              variant="solid"
+            >
+              <IoIosChatbubbles className=" text-xl text-white" />
+            </Button>
+          </div>
         ) : (
           <></>
         )}
