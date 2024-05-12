@@ -1,10 +1,14 @@
 package controllers
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+
+	// "strconv"
+	"strings"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gorilla/mux"
@@ -32,6 +36,10 @@ type UserWishlistUpdate struct {
   WishList []string `json:wishList`
 }
 
+type UserWishlistDelete struct {
+  WishList string `json:wishList`
+}
+
 //
 func CheckUsers(w http.ResponseWriter, r *http.Request){
 
@@ -51,7 +59,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request){
   body, _ := io.ReadAll(r.Body)
   _ = json.Unmarshal(body, &input)
 
-  fmt.Println(input,"CreateUser");
+  
 
   validate = validator.New()
   err := validate.Struct(input)
@@ -63,7 +71,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request){
 
   quest, err := models.NewUser(input.WalletAddress)
 
-  fmt.Println(input.WalletAddress)
+  
 
   w.Header().Set("Content-Type", "application/json")
  
@@ -97,15 +105,8 @@ func GetUserById(w http.ResponseWriter, r *http.Request){
     return
   }
 
+json.NewEncoder(w).Encode(user)
 
-  
-  //experiment
-  // models.DB.Raw("SELECT id,walletAddress FROM users WHERE id = ?", id).Scan(&user)
-
-  // var input models.User
-  // _ = json.Unmarshal(user, &input)
-
-  json.NewEncoder(w).Encode(user)
 }
 
 
@@ -194,3 +195,113 @@ func UpdateWishList(w http.ResponseWriter, r *http.Request){
   json.NewEncoder(w).Encode(user)
 }
 
+func DeleteWishList(w http.ResponseWriter, r *http.Request){
+  w.Header().Set("Content-Type", "application/json")
+
+  id := mux.Vars(r)["id"]
+  var user models.User
+
+  if err := models.DB.Where("id = ?", id).First(&user).Error; err != nil{
+    utils.RespondWithError(w, http.StatusNotFound, "User not found")
+    return
+  }
+
+  var inputWishlistDelete UserWishlistDelete 
+
+  body, _ := io.ReadAll(r.Body)
+  _ = json.Unmarshal(body, &inputWishlistDelete)
+
+  validate = validator.New()
+  err := validate.Struct(inputWishlistDelete)
+
+
+  if err != nil {
+    utils.RespondWithError(w, http.StatusBadRequest, "Validation Error")
+    return 
+  }
+
+  
+
+  index := -1
+  for i, v := range user.WishList {
+      if v == inputWishlistDelete.WishList {
+       
+          index = i
+          break
+      }
+  }
+
+  
+  if index != -1 {
+     
+      user.WishList = append(user.WishList[:index], user.WishList[index+1:]...)
+   
+  }
+
+  
+ 
+
+  models.DB.Save(&user)
+
+  json.NewEncoder(w).Encode(user)
+}
+
+func GetWishListById(w http.ResponseWriter, r *http.Request){w.Header().Set("Content-Type", "application/json")
+
+id := mux.Vars(r)["id"]
+token := r.URL.Query().Get("token")
+var user models.User
+
+if err := models.DB.Where("id = ?", id).First(&user).Error; 
+
+err != nil{
+  utils.RespondWithError(w, http.StatusNotFound, "User not found")
+  return
+}
+
+fmt.Println()
+
+strNumbers := make([]string, len(user.WishList))
+for i, num := range user.WishList {
+  strNumbers[i] = num
+}
+
+
+result := strings.Join(strNumbers, ",")
+
+fmt.Println(result) 
+
+query := []byte("fields id, name,cover.url; where id=(" + result + ");")
+
+  url := "https://api.igdb.com/v4/games/"
+  req, err := http.NewRequest("POST", url, bytes.NewBuffer(query))
+
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+  req.Header.Set("Accept", "application/json")
+  req.Header.Set("Client-ID", "5rqroe548z244rtq0z3yivankoxq7j")
+  req.Header.Set("Authorization", "Bearer "+token)
+  req.Header.Set("Access-Control-Allow-Origin", "http://localhost:8080")
+
+  client := &http.Client{}
+  resp, err := client.Do(req)
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+  defer resp.Body.Close()
+
+  
+
+  body, err := io.ReadAll(resp.Body)
+
+  fmt.Println((body))
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+
+w.Write(body)
+}
