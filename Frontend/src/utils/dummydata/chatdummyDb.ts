@@ -35,16 +35,6 @@ export const chat = [
       message: "👨",
     },
   ],
-  [
-    {
-      sender: "other",
-      message: "Nii bnara file jaa",
-    },
-    {
-      sender: "Me",
-      message: "TMKC REEL DEVELOPER",
-    },
-  ],
 ];
 
 export const users = [
@@ -55,9 +45,5 @@ export const users = [
   {
     name: "Humanb👨",
     message: "Me:👨",
-  },
-  {
-    name: "SANGHARSH FR",
-    message: "Me:TMKC REEL DEVELOPER",
   },
 ];

@@ -18,7 +18,6 @@ import Chat from "@/components/profile/Chat/Chat";
 export default function Profile() {
   const { buttonIndex }: any = useSidebarStore();
   const { address } = useAccount();
-
   console.log(address);
 
   return (

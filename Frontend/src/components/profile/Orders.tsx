@@ -1,44 +1,66 @@
-import { useCartStore } from "@/store/store";
+import { getRecommendations } from "@/api/games/getRecommendations";
+import { useCartStore, useSidebarStore } from "@/store/store";
 import { Button } from "@nextui-org/react";
+import { useEffect, useState } from "react";
 import { FaHeart, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+
 export default function Orders() {
-  const { cart } = useCartStore();
+  const { removeFromCart } = useCartStore();
+  const { setButtonIndex }: any = useSidebarStore();
+
   const navigate = useNavigate();
+
+  const [cartGames, setCartGames] = useState([]);
+
+  const Ids = JSON.parse(localStorage.getItem("cart"));
+
+  const getData = async () => {
+    const data = await getRecommendations(Ids);
+    setCartGames(data);
+  };
+  useEffect(() => {
+    getData();
+  }, []);
+
+  console.log(cartGames);
   return (
     <div className="mx-auto flex flex-col space-y-8 p-6 px-12 rounded-2xl bg-gray-200/10 sm:p-16 sm:px-24">
       <h2 className="text-3xl font-urbanist font-bold">Your cart</h2>
-      <p className="mt-3 text-xl font-medium text-white font-jura">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum eius
-        repellat ipsam, sit praesentium incidunt.
-      </p>
+
       <ul className="flex flex-col font-urbanist w-full divide-y divide-gray-200">
-        {cart.map((product) => (
+        {cartGames?.map((element) => (
           <li
-            key={product.id}
+            key={element.id}
             className="flex flex-col py-6 sm:flex-row sm:justify-between"
           >
             <div className="flex w-full space-x-2 sm:space-x-4">
               <img
-                className="h-20 w-20 flex-shrink-0 rounded object-cover outline-none dark:border-transparent sm:h-32 sm:w-32"
-                src={product.imageSrc}
-                alt={product.name}
+                className="h-20 w-20 cursor-pointer flex-shrink-0 rounded object-cover outline-none dark:border-transparent sm:h-32 sm:w-32"
+                src={element.cover?.url}
+                alt="no-img"
+                onClick={() => navigate(`/game/${element.id}`)}
               />
               <div className="flex w-full flex-col justify-between pb-4">
                 <div className="flex w-full justify-between space-x-2 pb-2">
                   <div className="space-y-1">
-                    <h3 className="text-xl font-semibold leading-snug sm:pr-8">
-                      {product.index}
+                    <h3
+                      className="text-xl cursor-pointer font-semibold leading-snug sm:pr-8"
+                      onClick={() => navigate(`/game/${element.id}`)}
+                    >
+                      {element?.name}
                     </h3>
-                    <p className="text-lg">{product.color}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-lg font-semibold">{product.price}</p>
                   </div>
                 </div>
                 <div className="flex divide-x gap-x-5 text-sm">
-                  <Button className="flex gap-x-5 bg-gray-200 hover:bg-red-200">
-                    {" "}
+                  <Button
+                    className="flex gap-x-5 bg-gray-200 hover:bg-red-200"
+                    onClick={() => {
+                      removeFromCart(element.id);
+                      setButtonIndex(2);
+                      window.location.reload();
+                    }}
+                  >
                     <FaTrash />
                     Remove
                   </Button>
@@ -54,10 +76,10 @@ export default function Orders() {
         ))}
       </ul>
       <div className="space-y-1 text-right">
-        <p>
+        {/* <p>
           Total amount:
           <span className="font-semibold"> 0 eth</span>
-        </p>
+        </p> */}
       </div>
       <div className="flex justify-end space-x-4">
         <Button
