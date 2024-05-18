@@ -10,11 +10,10 @@ import { config, projectId } from "@/contexts/WalletContext";
 import { MdShoppingCart } from "react-icons/md";
 import { useCartStore, useWishlistStore } from "@/store/store";
 
-import { updateWishlist } from "@/api/user/updateWishlist";
 import axios from "axios";
 
 export type GameProps = {
-  index: number;
+  index: string;
   url: string;
   name: string;
   rating: number;
@@ -37,26 +36,41 @@ export default function Games({
   const navigate = useNavigate();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlistStore();
   const { cart, addToCart, removeFromCart } = useCartStore();
-  const isInCart = cart.some((game) => game.index === index);
+  const isInCart = cart.includes(index);
 
-  const isInWishlist = wishlist.some((game) => game.index === index);
-
+  const isInWishlist = wishlist.includes(index);
   const modal = createWeb3Modal({ config, projectId });
 
   const handleWishlist = async () => {
     if (isConnected) {
       if (isInWishlist) {
-        toast.error(`${name} removed from Wishlist`);
-        removeFromWishlist(index);
+        try {
+          toast.error(`${name} removed from Wishlist`);
+          removeFromWishlist(index);
+          const userID = JSON.parse(sessionStorage.getItem("current-user"))?.ID;
+          await axios.delete(`http://localhost:8080/api/wish-list/${userID}`, {
+            data: {
+              wishList: String(index),
+            },
+          });
+          console.log(String(index));
+
+          console.log(`${index} removed`);
+        } catch (error) {
+          console.error("api not working!@!");
+        }
       } else {
-        const userID = JSON.parse(sessionStorage.getItem("current-user"))?.ID;
-        toast.success(`${name} added to Wishlist`);
-        await axios.put(`http://localhost:8080/api/wish-list/${userID}`, {
-          wishList: wishlist.map((item) => String(item.index)),
-        });
-        addToWishlist({
-          index,
-        });
+        try {
+          const userID = JSON.parse(sessionStorage.getItem("current-user"))?.ID;
+          toast.success(`${name} added to Wishlist`);
+          addToWishlist(index);
+          await axios.put(`http://localhost:8080/api/wish-list/${userID}`, {
+            wishList: [String(index)],
+          });
+          console.log(`${index} added to wihslist`);
+        } catch (error) {
+          console.error("Api is not working!!");
+        }
       }
     } else {
       modal.open();
@@ -73,11 +87,7 @@ export default function Games({
       } else {
         toast.success(`${name} added to Cart`);
 
-        addToCart({
-          index,
-          // url,
-          // name,
-        });
+        addToCart(index);
       }
     } else {
       modal.open();

@@ -9,9 +9,10 @@ import { config, projectId } from "@/contexts/WalletContext";
 import { createWeb3Modal } from "@web3modal/wagmi/react";
 import { useWishlistStore, useCartStore } from "@/store/store";
 import { RiSubtractFill } from "react-icons/ri";
+import axios from "axios";
 
 type dataType = {
-  id: number;
+  id: string;
   name: string;
   screenshots: [
     {
@@ -50,22 +51,41 @@ export default function GameDetails({
   const { isConnected } = useAccount();
   const modal = createWeb3Modal({ config, projectId });
   const { cart, addToCart, removeFromCart } = useCartStore();
-  const isInCart = cart.some((game) => game.id === data.id);
-  const { wishlist, addToWishlist, removeFromWishlist } = useWishlistStore();
-  const isInWishlist = wishlist.some((game) => game.id === data.id);
 
-  const handleWishlist = () => {
+  const { wishlist, addToWishlist, removeFromWishlist } = useWishlistStore();
+  const isInCart = cart.includes(data.id);
+
+  const isInWishlist = wishlist.includes(data.id);
+
+  const handleWishlist = async () => {
     if (isConnected) {
       if (isInWishlist) {
-        toast.error(`${data.name} removed from Wishlist`);
-        removeFromWishlist(data.id);
+        try {
+          toast.error(`${data.name} removed from Wishlist`);
+          removeFromWishlist(data.id);
+          const userID = JSON.parse(sessionStorage.getItem("current-user"))?.ID;
+          await axios.delete(`http://localhost:8080/api/wish-list/${userID}`, {
+            data: {
+              wishList: String(data.id),
+            },
+          });
+
+          console.log(`${data.id} removed`);
+        } catch (error) {
+          console.error("api not working!@!");
+        }
       } else {
-        toast.success(`${data.name} added to Wishlist`);
-        addToWishlist({
-          id: data.id,
-          // name: data.name,
-          // cover: { url: data.cover.url },
-        });
+        try {
+          const userID = JSON.parse(sessionStorage.getItem("current-user"))?.ID;
+          toast.success(`${data.name} added to Wishlist`);
+          addToWishlist(data.id);
+          await axios.put(`http://localhost:8080/api/wish-list/${userID}`, {
+            wishList: [String(data.id)],
+          });
+          console.log(`${data.id} added to wihslist`);
+        } catch (error) {
+          console.error("Api is not working!!");
+        }
       }
     } else {
       modal.open();
@@ -80,11 +100,7 @@ export default function GameDetails({
         removeFromCart(data.id);
       } else {
         toast.success(`${data.name} added to Wishlist`);
-        addToCart({
-          id: data.id,
-          // name: data.name,
-          // cover: { url: data.cover.url },
-        });
+        addToCart(data.id);
       }
     } else {
       modal.open();

@@ -47,7 +47,7 @@ export function NavbarComp() {
         (user: any) => user.walletAddress === address 
       );
       sessionStorage.setItem("current-user", JSON.stringify(user));
-      localStorage.setItem("userID", JSON.stringify(userID));
+      // localStorage.setItem("userID", JSON.stringify(userID));
       console.log(user);
 
       if (isConnected && user === undefined) {

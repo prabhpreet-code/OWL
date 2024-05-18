@@ -1,3 +1,5 @@
+import axios from "axios";
+
 import { create } from "zustand";
 
 export const useButtonStore = create((set) => ({
@@ -38,96 +40,55 @@ export const useFormStore = create((set) => ({
     set(() => ({ Form: updatedForm })),
 }));
 
-// export const useWishListStore = create((set) => ({
-//   wishlist: [],
-//   addToWishlist: (item: any) =>
-//     set((state) => ({ wishlist: [...state.wishlist, item] })),
-//   removefromWishlist: (item: any) =>
-//     set((state) => ({
-//       wishlist: state.wishlist.filter((element: any) => element.id != item.id),
-//     })),
-// }));
-
-interface Game {
-  index: number;
-  // url: string;
-  // name: string;
-}
-
-interface GameDetails {
-  id: number;
-  // name: string;
-  // cover: {
-  //   url: string;
-  // };
-}
-
-type Wishlist = Game | GameDetails;
-type Cart = Game | GameDetails;
+const getData = async () => {
+  const userID = JSON.parse(sessionStorage.getItem("current-user"))?.ID;
+  const result = await axios.get(
+    `http://localhost:8080/api/wish-list/${userID}?token=3y0clekizk08e1uhqx8uq8gvm1xhs1`
+  );
+  return result.data;
+};
 
 interface CartState {
-  cart: Cart[];
-  addToCart: (game: Cart) => void;
-  removeFromCart: (gameID: number) => void;
+  cart: string[];
+  addToCart: (gameID: string) => void;
+  removeFromCart: (gameID: string) => void;
 }
-
 interface WishlistState {
-  wishlist: Wishlist[];
-  addToWishlist: (game: Wishlist) => void;
-  removeFromWishlist: (gameID: number) => void;
+  wishlist: string[];
+  addToWishlist: (gameID: string) => void;
+  removeFromWishlist: (gameID: string) => void;
 }
 
 export const useWishlistStore = create<WishlistState>((set) => ({
   wishlist: [],
-  addToWishlist: (game: Wishlist) => {
-    set((state) => ({ wishlist: [...state.wishlist, game] }));
+  addToWishlist: (gameID: string) => {
+    set((state) => ({ wishlist: [...state.wishlist, gameID] }));
   },
-  removeFromWishlist: (gameID: number) => {
+  removeFromWishlist: (gameID: string) => {
     set((state) => ({
-      wishlist: state.wishlist.filter((game) => {
-        if ("index" in game) {
-          return game.index !== gameID;
-        } else {
-          return game.id !== gameID;
-        }
-      }),
+      wishlist: state.wishlist.filter((id) => id !== gameID),
     }));
   },
 }));
+getData().then((wishlistData) => {
+  const ids = wishlistData.map((item) => item.id);
+  useWishlistStore.setState({ wishlist: ids });
+});
 
 export const useCartStore = create<CartState>((set) => ({
-  cart: [],
-  addToCart: (game: Cart) => {
-    set((state) => ({ cart: [...state.cart, game] }));
+  cart: JSON.parse(localStorage.getItem("cart") || "[]"),
+  addToCart: (gameID) => {
+    set((state) => {
+      const newCart = [...state.cart, gameID];
+      localStorage.setItem("cart", JSON.stringify(newCart));
+      return { cart: newCart };
+    });
   },
-  removeFromCart: (gameID: number) => {
-    set((state) => ({
-      cart: state.cart.filter((game) => {
-        if ("index" in game) {
-          return game.index !== gameID;
-        } else {
-          return game.id !== gameID;
-        }
-      }),
-    }));
+  removeFromCart: (gameID) => {
+    set((state) => {
+      const newCart = state.cart.filter((id) => id !== gameID);
+      localStorage.setItem("cart", JSON.stringify(newCart));
+      return { cart: newCart };
+    });
   },
 }));
-
-// export const useUserStore = create((set) => ({
-//   user: {
-//     ID: "",
-//     username: " ",
-//     email: " ",
-//     bio: " ",
-//     picture: "",
-//     tags: [],
-//     walletAddress: "",
-//     CreatedAt: " ",
-//     DeletedAt: "",
-//     UpdatedAt: "",
-//     gamesOwned: [],
-//   },
-//   setUser: (info: any) => {
-//     set(() => ({ user: info }));
-//   },
-// }));

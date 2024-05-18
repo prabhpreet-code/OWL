@@ -1,11 +1,25 @@
+import { useEffect, useState } from "react";
 import Card from "../Detailpanel/Cards";
-import { useCartStore, useWishlistStore } from "@/store/store";
+
+import axios from "axios";
 
 export default function Wishlist() {
-  const { cart } = useCartStore();
-  const { wishlist } = useWishlistStore();
-  console.log("wishlist", wishlist);
-  console.log("cart", cart);
+  const [wishlist, setWishlist] = useState([]);
+
+  const getData = async () => {
+    const userID = JSON.parse(sessionStorage.getItem("current-user"))?.ID;
+    const result = await axios.get(
+      `http://localhost:8080/api/wish-list/${userID}?token=3y0clekizk08e1uhqx8uq8gvm1xhs1`
+    );
+    const lmao = result.data;
+    setWishlist(lmao);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  console.log(wishlist);
 
   return wishlist?.length === 0 ? (
     <h1>No game in your wishlist</h1>
@@ -15,12 +29,12 @@ export default function Wishlist() {
         Your Wishlist :
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-4 sm:grid-cols-2 sm:grid-rows-3  gap-5  place-items-center">
-        {wishlist?.map((element) => (
+        {wishlist?.map((game) => (
           <Card
-            key={element.index || element.id}
-            index={element.id || element.index}
-            url={element?.cover?.url || element.url}
-            name={element.name}
+            key={game.id}
+            index={game.id}
+            url={game.cover?.url}
+            name={game.name}
           />
         ))}
       </div>
