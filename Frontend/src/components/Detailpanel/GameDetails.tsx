@@ -122,7 +122,7 @@ export default function GameDetails({
           <div className=" col-span-3 pr-12  flex flex-wrap items-center object-cover">
             <CarouselPlugin array={data?.screenshots} link={video} />
           </div>
-          <div className="rounded-md bg-[rgba(255,255,255,0.05)] p-1 bg-opacity-50  opacity-85 hover:opacity-95 font-inter  md:col-span-1 lg:col-span-1 ">
+          <div className="rounded-md bg-[rgba(255,255,255,0.05)] p-1 bg-opacity-50  opacity-80 hover:opacity-95 font-inter  md:col-span-1 lg:col-span-1 transition-all ease-in">
             <img
               src={data?.cover?.url.replace("thumb", "screenshot_med")}
               alt="Cover Photo"

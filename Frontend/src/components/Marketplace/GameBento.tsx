@@ -1,8 +1,8 @@
 import ButtonArray from "./ButtonArray";
-import { useQuery } from "@tanstack/react-query";
 import { gsap } from "gsap";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { useQuery } from "@tanstack/react-query";
 
 export function GameBento() {
   const { data, isFetching, isLoading } = useQuery({
@@ -23,7 +23,9 @@ export function GameBento() {
         >
           {isLoading ? (
             <div
-              className={`relative row-span-1  rounded-xl  bg-background  dark:bg-neutral-900  ${index === 1 || index === 3 ? "col-span-3" : ""}
+              className={`relative row-span-1  rounded-xl  bg-background  dark:bg-neutral-900  ${
+                index === 1 || index === 3 ? "col-span-3" : ""
+              }
            ${index > 3 ? "hidden" : "visible"}`}
             >
               <Skeleton className="h-[100px]  w-full " />

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { useGetGames } from "@/hooks/useGetGames";
 
 export function MarketCarousel() {
   const queryCache = new QueryCache({
@@ -21,8 +22,6 @@ export function MarketCarousel() {
       console.log(data, error);
     },
   });
-  const Img = queryCache.find(["game-query"]);
-  console.log(Img);
 
   const settings = {
     className:
@@ -34,7 +33,10 @@ export function MarketCarousel() {
     autoplaySpeed: 7000,
     cssEase: "linear",
   };
-  const { data, isLoading } = useQuery({ queryKey: ["game-query"] });
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["game-query"],
+  });
 
   const navigate = useNavigate();
 
@@ -48,7 +50,7 @@ export function MarketCarousel() {
   return (
     <section>
       {isLoading ? (
-        <Skeleton className="w-full h-[500px] "/>
+        <Skeleton className="w-full h-[500px] " />
       ) : (
         <ScrollShadow
           hideScrollBar
@@ -68,7 +70,7 @@ export function MarketCarousel() {
                 index: React.Key | null | undefined
               ) => (
                 <div key={index} className="flex cursor-grab">
-                  <div className="flex h-[500px]">
+                  <div className="flex flex-1 h-[500px]">
                     <div className="flex flex-1 flex-col items-center pl-48 pr-4 w-[300px]  text-white   bg-gray-800 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10  ">
                       <div className="py-20 ">
                         {" "}
@@ -90,7 +92,7 @@ export function MarketCarousel() {
                     </div>
                     <img
                       key={index}
-                      className=" flex-1 object-contain"
+                      className=" flex-1 object-cover"
                       src={element?.cover?.url.replace("t_thumb", "t_1080p")}
                     />
                   </div>

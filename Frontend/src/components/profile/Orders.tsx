@@ -1,8 +1,10 @@
 import { useCartStore } from "@/store/store";
 import { Button } from "@nextui-org/react";
 import { FaHeart, FaTrash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 export default function Orders() {
   const { cart } = useCartStore();
+  const navigate = useNavigate();
   return (
     <div className="mx-auto flex flex-col space-y-8 p-6 px-12 rounded-2xl bg-gray-200/10 sm:p-16 sm:px-24">
       <h2 className="text-3xl font-urbanist font-bold">Your cart</h2>
@@ -61,6 +63,7 @@ export default function Orders() {
         <Button
           type="button"
           variant="solid"
+          onClick={() => navigate("/market")}
           className="rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
         >
           Back to shop
