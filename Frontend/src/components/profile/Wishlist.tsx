@@ -11,8 +11,8 @@ export default function Wishlist() {
     const result = await axios.get(
       `http://localhost:8080/api/wish-list/${userID}?token=3y0clekizk08e1uhqx8uq8gvm1xhs1`
     );
-    const lmao = result.data;
-    setWishlist(lmao);
+    const games = result.data;
+    setWishlist(games);
   };
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function Wishlist() {
 
   console.log(wishlist);
 
-  return wishlist?.length === 0 ? (
+  return wishlist[0]?.status === 400 ? (
     <h1>No game in your wishlist</h1>
   ) : (
     <section className="flex flex-col my-12 ">
